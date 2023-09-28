@@ -5,8 +5,26 @@
     --cor-verde-claro: #A2FF86;
 }
 
+body,
+body > *{
+    font-family: 'Lexend Deca', verdana, sans-serif !important;
+}
+
+h1, h2, h3, h4, h5, h6, p, input{
+    font-weight: 300;
+}
+
+a,
+.fw-bold{
+    font-weight: 500;
+}
+
+.fw-bolder{
+    font-weight: 600;
+}
+
 .logo{
-    height: 4rem;
+    height: 3rem;
 }
 
 /* COR DE TEXTO */

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tela de Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #164B60;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background-color: white;
+            border: 1px solid #000;
+            border-radius: 0;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            width: 400px;
+        }
+
+        .logo {
+            float: left;
+        }
+
+        .title {
+            float: right;
+            margin-right: 10px;
+            font-size: 24px;
+        }
+
+        .separator {
+            text-align: center;
+            margin: 15px 0;
+            position: relative;
+        }
+
+        .separator:before,
+        .separator:after {
+            content: "";
+            display: inline-block;
+            border-top: 1px solid black;
+            width: 45%;
+            position: absolute;
+            top: 50%;
+        }
+
+        .separator:before {
+            left: 0;
+        }
+
+        .separator:after {
+            right: 0;
+        }
+
+        .btn-custom {
+            background-color: #4EB6B6;
+            color: white;
+            border: none;
+        }
+
+        .btn-custom:hover {
+            background-color: #357f7f;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <img src="caminho/para/seu/logo.png" alt="Logo">
+        </div>
+        <div class="title">
+            <p>Fazer Login</p>
+        </div>
+        <div class="clearfix"></div>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" class="form-control" id="email" placeholder="Digite seu e-mail">
+            </div>
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" class="form-control" id="password" placeholder="Digite sua senha">
+            </div>
+            <div class="form-group">
+                <div class="float-left">
+                    <a href="#">Esqueci minha senha</a>
+                </div>
+                <div class="float-right">
+                    <label class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="keep-logged">
+                        <span class="custom-control-label">Manter logado</span>
+                    </label>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <button type="submit" class="btn btn-custom btn-block">Fazer Login</button>
+        </form>
+        <div class="separator">ou</div>
+        <button class="btn btn-custom btn-block">Cadastre-se como cliente</button>
+        <button class="btn btn-custom btn-block">Cadastre-se como loja</button>
+    </div>
+    <script>
+        // Você pode adicionar aqui qualquer código JavaScript adicional, como validação de formulário.
+        document.getElementById("login-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            // Adicione sua lógica de login aqui
+        });
+    </script>
+</body>
+</html>

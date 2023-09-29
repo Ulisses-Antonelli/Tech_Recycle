@@ -10,7 +10,7 @@ body > *{
     font-family: 'Lexend Deca', verdana, sans-serif !important;
 }
 
-h1, h2, h3, h4, h5, h6, p, input{
+h1, h2, h3, h4, h5, h6, p, input, label{
     font-weight: 300;
 }
 
@@ -63,4 +63,8 @@ a,
 .bg-verde-claro,
 .btn.bg-verde-claro{
     background-color: var(--cor-verde-claro) !important;
+}
+
+input[type="file"] {
+    display: none;
 }

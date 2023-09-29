@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import tech.recycle.api.dto.DadosAtualizacaoPontos;
 import tech.recycle.api.dto.DadosAtualizacaoUsuario;
 import tech.recycle.api.dto.DadosCadastroUsuario;
 
@@ -26,16 +27,17 @@ public class Usuario {
     private String cpf;
 
     @Enumerated(EnumType.STRING)
-    // @EnumValidator(enumClass = Privilegio.class, message =
-    // "{user.privilege.invalid}")
     private Privilegio privilegio;
 
     @Embedded
     private Endereco endereco;
 
+    @Embedded
+    private Pontos pontos;
+
     private boolean ativo;
 
-    public Usuario(DadosCadastroUsuario dados) {
+    public Usuario(@Valid DadosCadastroUsuario dados) {
         this.ativo = true;
         this.nome = dados.nome();
         this.email = dados.email();
@@ -43,6 +45,7 @@ public class Usuario {
         this.cpf = dados.cpf();
         this.privilegio = dados.privilegio();
         this.endereco = new Endereco(dados.endereco());
+        this.pontos = new Pontos();
     }
 
     public void atualizarInformacoes(@Valid DadosAtualizacaoUsuario dados) {
@@ -64,6 +67,8 @@ public class Usuario {
         if (dados.endereco() != null) {
             this.endereco.atualizarInformacoes(dados.endereco());
         }
+
+        // if (dados.pontos() != null){}
     }
 
     public void excluirUsuario() {

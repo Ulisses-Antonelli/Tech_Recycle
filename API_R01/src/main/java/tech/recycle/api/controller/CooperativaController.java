@@ -59,16 +59,15 @@ public class CooperativaController {
     public ResponseEntity atualizarCooperativa(@RequestBody @Valid DadosAtualizacaoCooperativa dados){
         var cooperativa = repository.findById(dados.id()).get();
         cooperativa.atualizarInformacoes(dados);
-        repository.save(cooperativa);
 
         return ResponseEntity.status(200).body(cooperativa);
     }
 
     @DeleteMapping("{id}")
+    @Transactional
     public ResponseEntity<String> excluirCooperativa(@PathVariable("id") Long id){
         var cooperativa = repository.findById(id).get();
         cooperativa.excluirCooperativa();
-        repository.save(cooperativa);
 
         return ResponseEntity.status(200).body("Cooperativa desativada");
     }

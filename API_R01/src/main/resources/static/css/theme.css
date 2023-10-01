@@ -5,6 +5,8 @@
     --cor-verde-claro: #A2FF86;
 }
 
+/* TEXTO */
+
 body,
 body > *{
     font-family: 'Lexend Deca', verdana, sans-serif !important;
@@ -23,8 +25,23 @@ a,
     font-weight: 600;
 }
 
+.fs-7{
+    font-size: 0.9rem;
+}
+
+.nav-link:hover{
+    font-weight: 700;
+    text-decoration: underline;
+    transition: 0.8s;
+}
+
+/* LOGO */
 .logo{
     height: 3rem;
+}
+
+.logo-menu{
+    height: 3vw;
 }
 
 /* COR DE TEXTO */

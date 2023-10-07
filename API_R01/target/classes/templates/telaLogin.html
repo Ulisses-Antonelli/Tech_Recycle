@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -76,43 +76,27 @@
 <body>
     <div class="login-container">
         <div class="d-flex justify-content-between align-items-center">
-            <a href="#"> <img src="../static/imgs/Logo.svg" class="logo" alt="Logo"> </a>
+            <a href="./telaHome.html"> <img src="../static/imgs/Logo.svg" class="logo" alt="Logo"> </a>
             <h4 class="fw-bold"> Fazer Login</h4>
         </div>
+
         <div class="clearfix mb-3"></div>
-        <form id="login-form">
+        
+        <form id="login-form" method="POST" action="/view/login" modelAttribute="DadosCredenciaisUsuario">
             <div class="form-group">
                 <label class="fw-bold my-1" for="email">E-mail</label>
-                <input type="email" class="form-control" id="email" placeholder="Digite seu e-mail">
+                <input type="email" class="form-control" id="email" placeholder="Digite seu e-mail" name="email">
             </div>
             <div class="form-group">
                 <label class="fw-bold my-1" for="password">Senha</label>
-                <input type="password" class="form-control" id="password" placeholder="Digite sua senha">
+                <input type="password" class="form-control" id="password" placeholder="Digite sua senha" name="password">
             </div>
-            <div class="form-group">
-                <div class="float-left">
-                    <a href="#">Esqueci minha senha</a>
-                </div>
-                <div class="float-right">
-                    <label class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="keep-logged">
-                        <span class="custom-control-label">Manter logado</span>
-                    </label>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <button type="submit" class="btn bg-verde-claro btn-block fw-bold">Fazer Login</button>
+            <button type="submit" class="btn bg-verde-claro align-self-end mb-2 mx-2 w-50 fw-bold">Concluir Cadastro</button>
         </form>
+
         <div class="separator">ou</div>
         <button class="btn bg-azul-claro btn-block fw-bold">Cadastre-se como cliente</button>
         <button class="btn bg-azul-claro btn-block fw-bold">Cadastre-se como loja</button>
     </div>
-    <script>
-        // Você pode adicionar aqui qualquer código JavaScript adicional, como validação de formulário.
-        document.getElementById("login-form").addEventListener("submit", function(event) {
-            event.preventDefault();
-            // Adicione sua lógica de login aqui
-        });
-    </script>
 </body>
 </html>

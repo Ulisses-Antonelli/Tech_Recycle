@@ -6,8 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import tech.recycle.api.dto.DadosAtualizacaoCredenciais;
 import tech.recycle.api.dto.DadosAtualizacaoUsuario;
 import tech.recycle.api.dto.DadosCadastroUsuario;
+import tech.recycle.api.dto.DadosFormCadastroUsuario;
 
 @Table(name = "usuarios")
 @Entity(name = "Usuario")
@@ -21,7 +23,6 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
-    private String email;
     private String telefone;
     private String cpf;
 
@@ -33,24 +34,44 @@ public class Usuario {
     @Embedded
     private Endereco endereco;
 
+    @Embedded
+    private Credenciais credenciais;
+
     private boolean ativo;
 
     public Usuario(DadosCadastroUsuario dados) {
         this.ativo = true;
         this.nome = dados.nome();
-        this.email = dados.email();
         this.telefone = dados.telefone();
         this.cpf = dados.cpf();
-        this.privilegio = dados.privilegio();
+        this.privilegio = dados.privilegio() != null ? dados.privilegio() : Privilegio.USUARIO;
+        this.credenciais = new Credenciais(dados.credenciais());
         this.endereco = new Endereco(dados.endereco());
+    }
+
+    public Usuario(DadosFormCadastroUsuario dados){
+        Endereco end = new Endereco(dados.logradouro(), 
+                                         dados.bairro(), 
+                                         dados.cep(), 
+                                         dados.numero(), 
+                                         dados.complemento(), 
+                                         dados.cidade(), 
+                                         dados.uf());
+
+        Credenciais cred = new Credenciais(dados.email(), dados.password());
+
+        this.ativo = true;
+        this.nome = dados.nome();
+        this.telefone = dados.telefone();
+        this.cpf = dados.cpf();
+        this.privilegio = dados.privilegio() != null ? dados.privilegio() : Privilegio.USUARIO;
+        this.credenciais = cred;
+        this.endereco = end;
     }
 
     public void atualizarInformacoes(@Valid DadosAtualizacaoUsuario dados) {
         if (dados.nome() != null) {
             this.nome = dados.nome();
-        }
-        if (dados.email() != null) {
-            this.email = dados.email();
         }
         if (dados.telefone() != null) {
             this.telefone = dados.telefone();
@@ -63,6 +84,13 @@ public class Usuario {
         }
         if (dados.endereco() != null) {
             this.endereco.atualizarInformacoes(dados.endereco());
+        }
+    }
+
+    public void atualizarCredenciais(@Valid DadosAtualizacaoCredenciais dados) {
+
+        if (dados.credenciais() != null) {
+            this.credenciais.atualizarCredenciais(dados.credenciais());
         }
     }
 

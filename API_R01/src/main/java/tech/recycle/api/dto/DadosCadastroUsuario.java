@@ -13,11 +13,13 @@ public record DadosCadastroUsuario(
 
         @NotBlank @Email String email,
 
-        @NotBlank @Pattern(regexp = "\\d{13}") String telefone,
+        @NotBlank @Pattern(regexp = "\\d{11}") String telefone,
 
-        @NotBlank @Pattern(regexp = "\\d{12}") String cpf,
+        @NotBlank @Pattern(regexp = "\\d{11}") String cpf,
 
-        @NotNull Privilegio privilegio,
+        Privilegio privilegio,
+
+        @NotNull @Valid DadosCredenciaisUsuario credenciais,
 
         @NotNull @Valid DadosEnderecoUsuario endereco) {
 

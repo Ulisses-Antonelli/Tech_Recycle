@@ -18,7 +18,7 @@ public record DadosCadastroUsuarioRetorno(
         this(
                 usuario.getId(),
                 usuario.getNome(),
-                usuario.getEmail(),
+                usuario.getCredenciais().getEmail(),
                 usuario.getTelefone(),
                 usuario.getCpf(),
                 usuario.getPrivilegio(),

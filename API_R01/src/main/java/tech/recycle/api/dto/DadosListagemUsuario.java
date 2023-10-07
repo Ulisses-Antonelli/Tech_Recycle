@@ -14,7 +14,7 @@ public record DadosListagemUsuario(
         this(
                 usuario.getId(),
                 usuario.getNome(),
-                usuario.getEmail(),
+                usuario.getCredenciais().getEmail(),
                 usuario.getCpf(),
                 usuario.getPrivilegio());
     }

@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import tech.recycle.api.dto.DadosAtualizacaoCredenciais;
 import tech.recycle.api.dto.DadosAtualizacaoUsuario;
 import tech.recycle.api.dto.DadosCadastroUsuario;
-import tech.recycle.api.dto.DadosFormCadastroUsuario;
 
 @Table(name = "usuarios")
 @Entity(name = "Usuario")
@@ -47,26 +46,6 @@ public class Usuario {
         this.privilegio = dados.privilegio() != null ? dados.privilegio() : Privilegio.USUARIO;
         this.credenciais = new Credenciais(dados.credenciais());
         this.endereco = new Endereco(dados.endereco());
-    }
-
-    public Usuario(DadosFormCadastroUsuario dados){
-        Endereco end = new Endereco(dados.logradouro(), 
-                                         dados.bairro(), 
-                                         dados.cep(), 
-                                         dados.numero(), 
-                                         dados.complemento(), 
-                                         dados.cidade(), 
-                                         dados.uf());
-
-        Credenciais cred = new Credenciais(dados.email(), dados.password());
-
-        this.ativo = true;
-        this.nome = dados.nome();
-        this.telefone = dados.telefone();
-        this.cpf = dados.cpf();
-        this.privilegio = dados.privilegio() != null ? dados.privilegio() : Privilegio.USUARIO;
-        this.credenciais = cred;
-        this.endereco = end;
     }
 
     public void atualizarInformacoes(@Valid DadosAtualizacaoUsuario dados) {

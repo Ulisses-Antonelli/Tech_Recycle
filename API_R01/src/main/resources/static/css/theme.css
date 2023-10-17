@@ -13,7 +13,11 @@ body > *{
 }
 
 h1, h2, h3, h4, h5, h6, p, input, label{
-    font-weight: 300;
+    font-weight: 400;
+}
+
+.fw-normal{
+    font-weight: 400;
 }
 
 a,
@@ -29,10 +33,20 @@ a,
     font-size: 0.9rem;
 }
 
+.nav-link,
+.nav-link:visited,
+.nav-link:active{
+    color: #212529;
+}
+
 .nav-link:hover{
-    font-weight: 700;
+    font-weight: 600;
     text-decoration: underline;
-    transition: 0.8s;
+}
+
+.active{
+    font-weight: 700;
+    color: #0049d0 !important;
 }
 
 /* LOGO */

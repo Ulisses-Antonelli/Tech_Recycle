@@ -7,7 +7,6 @@ public record DadosAtualizacaoUsuario(
 
         @NotNull Long id,
         String nome,
-        String email,
         String telefone,
         String cpf,
         Privilegio privilegio,

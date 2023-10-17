@@ -6,7 +6,7 @@ public record DadosListagemCooperativa(
     Long id,
     String nome,
     String email,
-    String cpf
+    String cnpj
 ){
     public DadosListagemCooperativa(Cooperativa cooperativa){
         this(

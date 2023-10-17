@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Pattern;
 public record DadosCadastroCooperativa(
     @NotBlank String nome,
     @NotBlank @Email String email,
-    @NotBlank @Pattern(regexp = "\\d{13}") String telefone,
-    @NotBlank @Pattern(regexp = "\\d{16}") String cnpj,
+    @NotBlank @Pattern(regexp = "\\d{11}") String telefone,
+    @NotBlank @Pattern(regexp = "\\d{14}") String cnpj,
     @NotNull @Valid DadosEnderecoUsuario endereco
 ) {}

@@ -1,5 +1,6 @@
 package tech.recycle.api.model;
 
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,27 +24,29 @@ public class Cooperativa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
-    private String email;
     private String telefone;
     private String cnpj;
+
+    @Embedded
     private Endereco endereco;
+
+    @Embedded
+    private Credenciais credenciais;
+
     private boolean ativo;
 
     public Cooperativa(DadosCadastroCooperativa dados){
         this.ativo = true;
         this.nome = dados.nome();
-        this.email = dados.email();
         this.telefone = dados.telefone();
         this.cnpj = dados.cnpj();
         this.endereco = new Endereco(dados.endereco());
+        this.credenciais = new Credenciais(dados.credenciais());
     }
 
     public void atualizarInformacoes(@Valid DadosAtualizacaoCooperativa dados){
         if(dados.nome() != null){
             this.nome = dados.nome();
-        }   
-        if(dados.email() != null){
-            this.email = dados.email();
         }
         if(dados.telefone() != null){
             this.telefone = dados.telefone();

@@ -12,7 +12,7 @@ const input_bairro = document.getElementById("bairro");
 const input_cidade = document.getElementById("cidade");
 const input_uf = document.getElementById("uf");
 const input_telefone = document.getElementById("telefone");
-const input_email = document.getElementById("email");
+// const input_email = document.getElementById("email");
 // const input_password = document.getElementById("password");
 // const input_conf_password = document.getElementById();
 
@@ -58,7 +58,6 @@ function alterarCooperativa(){
     let json_dados = {
         id: parseInt(param_id),
         nome: input_nome.value,
-        email: input_email.value,
         telefone: input_telefone.value,
         cnpj: input_cnpj.value,
         endereco: {

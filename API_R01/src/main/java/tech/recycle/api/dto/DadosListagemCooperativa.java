@@ -12,7 +12,7 @@ public record DadosListagemCooperativa(
         this(
             cooperativa.getId(),
             cooperativa.getNome(),
-            cooperativa.getEmail(),
+            cooperativa.getCredenciais().getEmail(),
             cooperativa.getCnpj()
         );
     }

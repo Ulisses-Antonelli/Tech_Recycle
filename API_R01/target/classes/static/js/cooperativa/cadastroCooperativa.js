@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 async function cadastrarCooperativa(){
     let nome =      input_nome.value;
     let email =     input_email.value;
+    let password =  input_password.value;
     let telefone =  input_telefone.value;
     let cnpj =      input_cnpj.value;
 
@@ -37,7 +38,6 @@ async function cadastrarCooperativa(){
     // montando o objeto da cooperativa
     let cooperativa = {
         nome: nome,
-        email: email,
         telefone: telefone,
         cnpj: cnpj,
         endereco: {
@@ -48,6 +48,10 @@ async function cadastrarCooperativa(){
             uf: uf,
             complemento: complemento,
             numero: numero
+        },
+        credenciais: {
+            email: email,
+            password: password
         }
     };
 

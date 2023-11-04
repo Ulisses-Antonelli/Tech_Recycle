@@ -1,0 +1,132 @@
+body{
+    background-color: #164B60;
+}
+
+nav{
+    z-index: 10;
+    padding: 0;
+    background-color:#fff;
+}
+
+main{
+    height: 100%;
+    padding: 40px;
+}
+
+.atualizar-dados{
+    display: grid;
+    grid-template-columns: 280px 280px 460px;
+    column-gap: 25px;
+}
+
+.form-atualizar-dados{
+    display: grid;
+    grid-template-columns: 280px 280px;
+    grid-template-rows: repeat(6, 78px);
+    justify-content: start;
+    align-items: center;
+    column-gap: 20px;
+}
+
+.dados-usuario{
+    display: grid;
+    align-items: center;
+    grid-template-rows: repeat(7, 66.8px);
+    grid-column: 3/4;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.1rem;
+}
+
+.nome{
+    grid-row: 1/2;
+}
+
+.cpf{
+    grid-row: 2/3;
+}
+
+.cep{
+    grid-row: 3/4;
+}
+
+.rua{
+    grid-row: 4/5;
+}
+
+.numero{
+    grid-row: 5/6;
+}
+
+.bairro{
+    grid-row: 6/7;
+}
+
+.celular{
+    grid-row: 1/2;
+}
+
+.email{
+    grid-row: 2/3;
+}
+
+.nova-senha{
+    grid-row: 3/4;
+}
+
+.confirmar-senha{
+    grid-row: 4/5;
+}
+
+#salvarDados{
+    margin-top: 25px;
+    align-self: center;
+    grid-row: 5/6;
+}
+
+#excluirDados{
+    margin-top: 25px;
+    align-self: center;
+    grid-row: 6/7;
+}
+
+.output-nome{
+    font-weight: 600;
+    margin: 0px 20px;
+    grid-row: 1/2;
+}
+
+.output-cpf{
+    font-weight: 600;
+    margin: 0px 20px;
+    grid-row: 2/3;
+}
+
+.output-rua{
+    font-weight: 600;
+    margin: 0px 20px;
+    grid-row: 3/4;
+}
+
+.output-numero{
+    font-weight: 600;
+    margin: 0px 20px;
+    grid-row: 4/5;
+}
+
+.output-bairro{
+    font-weight: 600;
+    margin: 0px 20px;
+    grid-row: 5/6;
+}
+
+.output-celular{
+    font-weight: 600;
+    margin: 0px 20px;
+    grid-row: 6/7;
+}
+
+.output-email{
+    font-weight: 600;
+    margin: 0px 20px;
+    grid-row: 7/8;
+}

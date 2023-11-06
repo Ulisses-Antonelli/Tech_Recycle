@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             elem_td_id.classList.add("d-flex", "align-self-center")
             elem_tr.append(elem_td_id);
             
-            elem_td_nome.textContent = emp.nome;
+            elem_td_nome.textContent = emp.estabelecimento;
             elem_tr.append(elem_td_nome);
 
             elem_td_email.textContent = emp.email;

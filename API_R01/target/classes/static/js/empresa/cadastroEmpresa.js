@@ -70,7 +70,6 @@ async function cadastrarEmpresa(){
     isCampoVazio(input_numero);
     let numero = input_numero.value;
 
-    // tratamento de erros
     // montando o objeto da empresa
     let empresa = {
         estabelecimento: estabelecimento,

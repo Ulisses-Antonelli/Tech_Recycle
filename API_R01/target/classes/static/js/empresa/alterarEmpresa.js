@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
         input_cidade.value =        empresa.endereco.cidade;
         input_uf.value =            empresa.endereco.uf;
         input_telefone.value =      empresa.telefone;
-        input_email.value =         empresa.email;
+        //input_email.value =         empresa.email;
         // input_password.value =   empresa.password
     });
 
@@ -80,7 +80,7 @@ function alterarEmpresa(){
     headers.append('Accept', 'application/json');
     headers.append('Origin', '*');
 
-    fetch('http://localhost:8080/empresa/'+param_id, {
+    fetch('http://localhost:8080/empresa', {
         mode: 'cors',
         method: 'PUT',
         headers: headers,

@@ -6,5 +6,5 @@ import jakarta.validation.constraints.Pattern;
 
 public record DadosCredenciaisUsuario(
         @NotBlank @Email String email,
-        @NotBlank @Pattern(regexp = "\\d{5}") String password) {
+        @NotBlank @Pattern(regexp = ".{8,64}$") String password) {
 }

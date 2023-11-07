@@ -53,8 +53,8 @@ public class EmpresaController {
     @CrossOrigin
     @PostMapping
     public ResponseEntity creatEmpresa(@RequestBody @Valid DadosCadastroEmpresa data){
-        Empresa Empresa1 = new Empresa(data);
-        repository.save(Empresa1);
+        Empresa Empresa = new Empresa(data);
+        repository.save(Empresa);
         System.out.println(data);
         return ResponseEntity.ok().build();
     }

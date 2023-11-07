@@ -1,6 +1,9 @@
 package tech.recycle.api.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jackson.JsonObjectSerializer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -20,7 +23,6 @@ import jakarta.validation.Valid;
 import tech.recycle.api.dto.DadosAtualizacaoCooperativa;
 import tech.recycle.api.dto.DadosCadastroCooperativa;
 import tech.recycle.api.dto.DadosListagemCooperativa;
-import tech.recycle.api.dto.DadosListagemUsuario;
 import tech.recycle.api.model.Cooperativa;
 import tech.recycle.api.repository.CooperativaRepository;
 
@@ -54,6 +56,18 @@ public class CooperativaController {
         var cooperativa = repository.findById(id).get();
 
         return ResponseEntity.status(200).body(cooperativa);
+    }
+
+    @GetMapping("email/{email}")
+    public ResponseEntity acharCooperativaPorEmail(@PathVariable("email") String email ){
+        Optional<Cooperativa> cooperativa = repository.findByEmail(email);
+
+        if(cooperativa.isPresent()){
+            return ResponseEntity.status(200).body(cooperativa.get());
+        } else {
+            return ResponseEntity.status(404).build();
+        }
+        
     }
 
     @PutMapping("{id}")

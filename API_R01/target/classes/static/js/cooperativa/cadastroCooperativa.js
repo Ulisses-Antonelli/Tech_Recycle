@@ -65,6 +65,13 @@ input_password.setAttribute('maxlength','64')
 const btn_submit = document.getElementById("submit");
 
 document.addEventListener('DOMContentLoaded', async function () {
+    input_cep.addEventListener('keyup', () => {
+        if(input_cep.value.length == 8){
+            input_cep.disabled = true;
+            isCepValido(input_cep.value);
+        }
+    });
+    
     btn_submit.addEventListener("click", (e) => {
         e.preventDefault();
         cadastrarCooperativa();
@@ -80,11 +87,25 @@ async function cadastrarCooperativa(){
         };
     });
 
-    // verificação de tamanho
+    // verificação de tamanho do cep
     if(!hasTamanhoDesejado(input_cep, 8)){
         notificar("CEP inválido. Faltam dígitos","erro");
         throw new Error("Campo CEP invalido")
     }
+
+    // verificacao de tamanho da senha
+    if(!hasTamanhoEntre(input_password, 8, 64)){
+        notificar("A senha deve ter no mínimo 8 Caracteres","erro");
+        throw new Error("Senha com tamanho invalido");
+    }
+
+    // verificacao de email ja cadastrado
+    if(isEmailCadastrado(input_email.value)){
+        notificar("Email já cadastrado no Sistema","erro");
+        throw new Error("Email já cadastrado: "+input_email.value);
+    }
+
+    // testando o CEP para ver se é valido + preenchendo alguns campos automaticamente
 
     // montando o objeto da cooperativa
     let cooperativa = {
@@ -153,8 +174,57 @@ function hasTamanhoDesejado(input, tamanho){
     }
 }
 
-function isCepValido(cep){
+function hasTamanhoEntre(input, tamanho_min, tamanho_max){
+    if(input.value.length >= tamanho_min && input.value.length <= tamanho_max){
+        input.style.outline = "none"
+        return true;
+    } else {
+        input.style.outline = "2px solid #FF0000"
+        return false;
+    }
+}
 
+async function isCepValido(cep){
+    await fetch('https://viacep.com.br/ws/'+cep+'/json/', {
+        method: 'GET'
+    }).then(data => {
+        return data.json()
+    }).then(dados => {
+        if(dados.hasOwnProperty('erro')){
+            input_logradouro.value = null;
+            input_bairro.value = null;
+            input_cidade.value = null;
+            input_uf.value = null;
+            notificar("O CEP informado não existe","erro")
+            input_cep.disabled = false;
+        } else {
+            input_logradouro.value = dados.logradouro;
+            input_bairro.value = dados.bairro;
+            input_cidade.value = dados.localidade;
+            input_uf.value = dados.uf;
+            input_cep.disabled = false;
+        } 
+    });
+}
+
+async function isEmailCadastrado(email){
+
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Accept', 'application/json');
+    headers.append('Origin', '*');
+
+    await fetch('http://localhost:8080/cooperativa/email/'+email, {
+        method: "GET",
+        headers: headers
+    }).then(data => {
+        return data.json();
+    }).then(dados => {
+        console.log(dados)
+        return true;
+    }).catch(erro => {
+        return false;
+    })
 }
 
 function adicionarRegex(input, valor_regex){

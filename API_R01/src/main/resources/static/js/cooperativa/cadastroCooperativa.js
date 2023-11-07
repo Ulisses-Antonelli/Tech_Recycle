@@ -79,6 +79,12 @@ document.addEventListener('DOMContentLoaded', async function () {
 });
 
 async function cadastrarCooperativa(){
+    // verificação de tamanho do cep
+    if(!hasTamanhoDesejado(input_cep, 8)){
+        notificar("CEP inválido. Faltam dígitos","erro");
+        throw new Error("Campo CEP invalido")
+    }
+
     // verificação de campo vazio em todos os inputs. Throw new error quebra a function e evita o fetch que vai dar erro
     array_inputs.forEach(input => {
         if (isCampoVazio(input)){
@@ -87,23 +93,18 @@ async function cadastrarCooperativa(){
         };
     });
 
-    // verificação de tamanho do cep
-    if(!hasTamanhoDesejado(input_cep, 8)){
-        notificar("CEP inválido. Faltam dígitos","erro");
-        throw new Error("Campo CEP invalido")
-    }
-
     // verificacao de tamanho da senha
     if(!hasTamanhoEntre(input_password, 8, 64)){
         notificar("A senha deve ter no mínimo 8 Caracteres","erro");
         throw new Error("Senha com tamanho invalido");
     }
 
-    // verificacao de email ja cadastrado
-    if(isEmailCadastrado(input_email.value)){
-        notificar("Email já cadastrado no Sistema","erro");
-        throw new Error("Email já cadastrado: "+input_email.value);
+    // calote do email
+    if(!isEmailDisponivel(input_email.value)){
+        notificar("O Email já está em uso","erro");
+        throw new Error("Senha com tamanho invalido");
     }
+    
 
     // testando o CEP para ver se é valido + preenchendo alguns campos automaticamente
 
@@ -128,6 +129,7 @@ async function cadastrarCooperativa(){
     };
 
     // preparando requisição
+    localStorage.setItem("email", email);
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Accept', 'application/json');
@@ -207,24 +209,13 @@ async function isCepValido(cep){
     });
 }
 
-async function isEmailCadastrado(email){
-
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Accept', 'application/json');
-    headers.append('Origin', '*');
-
-    await fetch('http://localhost:8080/cooperativa/email/'+email, {
-        method: "GET",
-        headers: headers
-    }).then(data => {
-        return data.json();
-    }).then(dados => {
-        console.log(dados)
-        return true;
-    }).catch(erro => {
+function isEmailDisponivel(email){
+    let ls_email = localStorage.getItem('email');
+    if(ls_email != null){
         return false;
-    })
+    } else {
+        return true;
+    }
 }
 
 function adicionarRegex(input, valor_regex){

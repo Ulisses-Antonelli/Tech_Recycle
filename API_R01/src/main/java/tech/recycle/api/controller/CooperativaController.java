@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
+
 import jakarta.validation.Valid;
 import tech.recycle.api.dto.DadosAtualizacaoCooperativa;
 import tech.recycle.api.dto.DadosCadastroCooperativa;
@@ -65,7 +67,7 @@ public class CooperativaController {
         if(cooperativa.isPresent()){
             return ResponseEntity.status(200).body(cooperativa.get());
         } else {
-            return ResponseEntity.status(404).build();
+            return ResponseEntity.status(404).body(null);
         }
         
     }

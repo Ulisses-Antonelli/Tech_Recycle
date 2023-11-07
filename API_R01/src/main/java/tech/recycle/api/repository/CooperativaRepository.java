@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import tech.recycle.api.model.Cooperativa;
-import tech.recycle.api.model.Credenciais;
 
 @Repository
 public interface CooperativaRepository extends JpaRepository<Cooperativa, Long> {

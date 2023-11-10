@@ -5,8 +5,9 @@ let h6_mensagem = document.createElement('h6');            // mensagem a ser exi
 let div_linha_status = document.createElement('div');       // barrinha colorida. A cor deve refletir o tipo de alerta
 
 let div_box;                // container da notificacao, grid 2x2; primeira linha é a barra de status; segunda linha o icone e mensagem
-let icone_erro = document.createElement('img');             // icone de erro
-let icone_sucesso;          // icone de sucesso
+let icone_erro = document.createElement('span');             // icone de erro
+let icone_sucesso = document.createElement('span');          // icone de sucesso
+let icone_aviso = document.createElement('span');          // icone de aviso
 
 document.addEventListener('DOMContentLoaded', async function (){
     inicializarNotificacao();
@@ -63,6 +64,7 @@ function inicializarNotificacao(){
     h6_mensagem.style.margin = "0";
     div_box.append(h6_mensagem);
 
+    // Deixando o icone de erro montado
     icone_erro.style.margin = '15px 30px';
     icone_erro.style.gridColumn = "1";
     icone_erro.style.gridRow = "2";
@@ -70,9 +72,14 @@ function inicializarNotificacao(){
     icone_erro.style.hegiht = '2rem';
     icone_erro.style.border = '2px solid black';
     icone_erro.style.borderRadius = '50%';
-    icone_erro.setAttribute('src','../../static/imgs/x.svg');
+    icone_erro.style.height = '32px';
+    icone_erro.style.width = '32px';
+    icone_erro.style.fontWeight = 'bolder';
+    icone_erro.style.fontSize = '20px';
+    icone_erro.style.textAlign = 'center';
+    icone_erro.innerHTML = "&#10005";
 
-    icone_sucesso = document.createElement('img');
+    // montando o icone de sucesso
     icone_sucesso.style.margin = '15px 30px';
     icone_sucesso.style.gridColumn = "1";
     icone_sucesso.style.gridRow = "2";
@@ -80,7 +87,25 @@ function inicializarNotificacao(){
     icone_sucesso.style.hegiht = '2rem';
     icone_sucesso.style.border = '2px solid black';
     icone_sucesso.style.borderRadius = '50%';
-    icone_sucesso.setAttribute('src','../../static/imgs/check-lg.svg')
+    icone_sucesso.style.height = '32px';
+    icone_sucesso.style.width = '32px';
+    icone_sucesso.style.fontWeight = 'bolder';
+    icone_sucesso.style.fontSize = '20px';
+    icone_sucesso.style.textAlign = 'center';
+    icone_sucesso.innerHTML = "&#x2713;";
+
+    // montando o icone de aviso
+    icone_aviso.style.margin = '0px 30px 15px 35px';
+    icone_aviso.style.gridColumn = "1";
+    icone_aviso.style.gridRow = "2";
+    icone_aviso.style.width = '2rem';
+    icone_aviso.style.hegiht = '2rem';
+    icone_aviso.style.height = '46px';
+    icone_aviso.style.width = '32px';
+    icone_aviso.style.fontWeight = 'normal';
+    icone_aviso.style.fontSize = '40px';
+    icone_aviso.style.textAlign = 'center';
+    icone_aviso.innerHTML = "&#x26A0;";
 
     div_wrapper.remove();
 }
@@ -95,11 +120,18 @@ async function notificar(mensagem, tipo){
     body.append(div_wrapper);
     body.append(div_fundo);
 
+    // removendo os icones que podem estar na notificação. Caso não remova, a segunda notificacao exibida vai possuir 2 icones, devido a primeira ja ter sido chamada antes
+    icone_sucesso.remove();
+    icone_erro.remove();
+    icone_aviso.remove();
+
+    // mensagem a ser exibida
     h6_mensagem.textContent = mensagem;
 
     switch(tipo){
         case "erro":
             div_linha_status.style.backgroundColor = "red";
+            div_linha_status.classList.add("notific_barra_progresso")
             div_box.append(icone_erro);
 
             
@@ -116,6 +148,27 @@ async function notificar(mensagem, tipo){
             
             div_wrapper.style.transform = "translateY(0)";
             let y = setTimeout( ()=>{
+                div_wrapper.style.transform = "translateY(-200px)";
+                div_fundo.remove();
+            }, 5000);
+            break;
+        case "aviso":
+            div_linha_status.style.backgroundColor = "yellow";
+            div_box.append(icone_aviso);
+            
+            div_wrapper.style.transform = "translateY(0)";
+            let z = setTimeout( ()=>{
+                div_wrapper.style.transform = "translateY(-200px)";
+                div_fundo.remove();
+            }, 5000);
+            break;
+        default:
+            div_linha_status.style.backgroundColor = "red";
+            div_box.append(icone_erro);
+
+            
+            div_wrapper.style.transform = "translateY(0)";
+            let w = setTimeout( ()=>{
                 div_wrapper.style.transform = "translateY(-200px)";
                 div_fundo.remove();
             }, 5000);

@@ -1,9 +1,9 @@
 package tech.recycle.api.controller;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jackson.JsonObjectSerializer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -67,7 +67,9 @@ public class CooperativaController {
         if(cooperativa.isPresent()){
             return ResponseEntity.status(200).body(cooperativa.get());
         } else {
-            return ResponseEntity.status(404).body(null);
+            HashMap<String, Boolean> disp = new HashMap<>();
+            disp.put("disponivel", true);
+            return ResponseEntity.status(200).body(disp);
         }
         
     }

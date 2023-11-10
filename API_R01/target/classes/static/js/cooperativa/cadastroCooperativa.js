@@ -1,65 +1,64 @@
-const array_inputs = []; // para facilitar nossa vida na hora de autenticar os dados, vamos guardar os inputs num array.
+const array_inputs_obrigatorios = []; // para facilitar nossa vida na hora de autenticar os dados, vamos guardar os inputs num array.
 
 // NOME
 const input_nome = document.getElementById("nome");
-array_inputs.push(input_nome);
+array_inputs_obrigatorios.push(input_nome);
 input_nome.setAttribute('maxlength','200');
 
 // CNPJ
 const input_cnpj = document.getElementById("cnpj");
-array_inputs.push(input_cnpj);
+array_inputs_obrigatorios.push(input_cnpj);
 input_cnpj.setAttribute('maxlength','14');
 
 // CEP
 const input_cep = document.getElementById("cep");
-array_inputs.push(input_cep);
+array_inputs_obrigatorios.push(input_cep);
 input_cep.setAttribute('maxlength','8');
 adicionarRegex(input_cep, "^[0-9]*$");
 
 // LOGRADOURO
 const input_logradouro = document.getElementById("logradouro");
-array_inputs.push(input_logradouro);
+array_inputs_obrigatorios.push(input_logradouro);
 input_logradouro.setAttribute('maxlength','200')
 
 // NUMERO
 const input_numero = document.getElementById("numero");
-array_inputs.push(input_numero);
+array_inputs_obrigatorios.push(input_numero);
 input_numero.setAttribute('maxlength','7')
 adicionarRegex(input_numero, "^[0-9]*$");
 
 // COMPLEMENTO
 const input_complemento = document.getElementById("complemento");
-array_inputs.push(input_complemento);
 input_complemento.setAttribute('maxlength','200')
 
 // BAIRRO
 const input_bairro = document.getElementById("bairro");
-array_inputs.push(input_bairro);
+array_inputs_obrigatorios.push(input_bairro);
 input_bairro.setAttribute('maxlength','200')
 
 // CIDADE
 const input_cidade = document.getElementById("cidade");
-array_inputs.push(input_cidade);
+array_inputs_obrigatorios.push(input_cidade);
 input_cidade.setAttribute('maxlength','200')
 
 // UF
 const input_uf = document.getElementById("uf");
-array_inputs.push(input_uf);
+array_inputs_obrigatorios.push(input_uf);
 
 // TELEFONE
 const input_telefone = document.getElementById("telefone");
-array_inputs.push(input_telefone);
+array_inputs_obrigatorios.push(input_telefone);
 input_telefone.setAttribute('maxlength','11');
 adicionarRegex(input_telefone, "^[0-9]*$")
 
 // EMAIL
 const input_email = document.getElementById("email");
-array_inputs.push(input_email);
+array_inputs_obrigatorios.push(input_email);
 input_email.setAttribute('maxlength','200')
 
 // SENHA
 const input_password = document.getElementById("password");
-array_inputs.push(input_password);
+array_inputs_obrigatorios.push(input_password);
 input_password.setAttribute('maxlength','64')
 
 const btn_submit = document.getElementById("submit");
@@ -86,7 +85,7 @@ async function cadastrarCooperativa(){
     }
 
     // verificação de campo vazio em todos os inputs. Throw new error quebra a function e evita o fetch que vai dar erro
-    array_inputs.forEach(input => {
+    array_inputs_obrigatorios.forEach(input => {
         if (isCampoVazio(input)){
             notificar("O Campo \""+input.getAttribute('placeholder')+"\" está Vazio","erro");
             throw new Error("Existem Campos Vázios no Formulário");
@@ -99,14 +98,24 @@ async function cadastrarCooperativa(){
         throw new Error("Senha com tamanho invalido");
     }
 
-    // calote do email
-    if(!isEmailDisponivel(input_email.value)){
-        notificar("O Email já está em uso","erro");
-        throw new Error("Senha com tamanho invalido");
+    if(!hasTamanhoDesejado(input_telefone, 11)){
+        notificar("O telefone deve ter no mínimo 11 Caracteres","erro");
+        throw new Error("Telefone com tamanho invalido");
     }
-    
 
-    // testando o CEP para ver se é valido + preenchendo alguns campos automaticamente
+    if(!hasTamanhoDesejado(input_cnpj, 14)){
+        notificar("O CNPJ deve ter no mínimo 14 Caracteres","erro");
+        throw new Error("CNPJ com tamanho invalido");
+    }
+
+
+    // verificando tamanho do email
+    let email_disponivel = await isEmailDisponivel(input_email.value);
+    console.log(email_disponivel)
+    if(!email_disponivel){
+        notificar("O Email já está em uso","erro");
+        throw new Error("Email em uso");
+    }
 
     // montando o objeto da cooperativa
     let cooperativa = {
@@ -129,7 +138,6 @@ async function cadastrarCooperativa(){
     };
 
     // preparando requisição
-    localStorage.setItem("email", email);
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Accept', 'application/json');
@@ -197,7 +205,8 @@ async function isCepValido(cep){
             input_bairro.value = null;
             input_cidade.value = null;
             input_uf.value = null;
-            notificar("O CEP informado não existe","erro")
+            notificar("O CEP informado não existe","aviso")
+            input_cep.style.outline = "none";
             input_cep.disabled = false;
         } else {
             input_logradouro.value = dados.logradouro;
@@ -209,13 +218,23 @@ async function isCepValido(cep){
     });
 }
 
-function isEmailDisponivel(email){
-    let ls_email = localStorage.getItem('email');
-    if(ls_email != null){
-        return false;
-    } else {
-        return true;
-    }
+async function isEmailDisponivel(email){
+    // preparando requisição
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Accept', 'application/json');
+    headers.append('Origin', '*');
+
+    let email_disp = await fetch("http://localhost:8080/cooperativa/email/"+email, {
+        method: "GET",
+        headers: headers
+    }).then(data => {
+        return data.json();
+    }).then(dados => {
+        return dados.hasOwnProperty('disponivel');
+    });
+
+    return email_disp;
 }
 
 function adicionarRegex(input, valor_regex){

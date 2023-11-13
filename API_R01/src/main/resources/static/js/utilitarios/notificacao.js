@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', async function (){
 
 function inicializarNotificacao(){
     div_fundo = document.createElement('div');
-    div_fundo.style.position = 'absolute';
+    div_fundo.style.position = 'fixed';
     div_fundo.style.top = '0';
     div_fundo.style.width = '100%';
     div_fundo.style.height = '100%';
@@ -28,7 +28,7 @@ function inicializarNotificacao(){
     div_wrapper.style.alignItems = 'center';
     div_wrapper.style.justifyContent = 'center';
     div_wrapper.style.width = '100%';
-    div_wrapper.style.position = 'absolute';
+    div_wrapper.style.position = 'fixed';
     div_wrapper.style.top = '50px';
     div_wrapper.style.zIndex = '5';
     div_wrapper.style.transform = "translateY(-200px)";

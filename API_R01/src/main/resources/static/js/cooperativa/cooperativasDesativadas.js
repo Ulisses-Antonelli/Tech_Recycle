@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     headers.append('Accept', 'application/json');
     headers.append('Origin', '*');
 
-    await fetch('http://localhost:8080/cooperativa', {
+    await fetch('http://localhost:8080/cooperativa/desativadas', {
         mode: 'cors',
         method: 'GET',
         headers: headers
@@ -24,8 +24,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             const elem_td_email = document.createElement('td');
             const elem_td_cnpj = document.createElement('td');
 
-            const elem_td_update = document.createElement('td');
-            const elem_a_update = document.createElement('a')
+            const elem_td_reativar = document.createElement('td');
+            const elem_a_reativar = document.createElement('a')
 
             const elem_td_delete = document.createElement('td');
             const elem_a_delete = document.createElement('a')
@@ -43,22 +43,28 @@ document.addEventListener('DOMContentLoaded', async function () {
             elem_td_cnpj.textContent = coop.cnpj;
             elem_tr.append(elem_td_cnpj);
 
-            /* UPDATE */
-            elem_a_update.textContent = "Alterar"; // criando o <a href="..."> </a> 
-            elem_a_update.classList.add("btn", "py-0", "btn-outline-dark");
-            elem_a_update.setAttribute("href","../../templates/cooperativas/alterarCooperativa.html?id="+coop.id) // colocando o <a> dentro do <td>
-            elem_td_update.append(elem_a_update); // colocando o <td><a href="..."></a></td> dentro do <tr>
-            elem_tr.append(elem_td_update);
+            /* reativacao */
+            elem_a_reativar.textContent = "Reativar"; // criando o <a href="..."> </a> 
+            elem_a_reativar.classList.add("btn", "py-0", "btn-outline-dark");
+            elem_a_reativar.setAttribute("data-id", coop.id);
+            elem_a_reativar.addEventListener("click", (e) => {
+                e.preventDefault();
+                document.body.style.cursor = "wait";
+                e.target.style.opacity = "0.7";
+                reativarCooperativa(coop.id, e.target);
+            });
+            elem_td_reativar.append(elem_a_reativar); // colocando o <td><a href="..."></a></td> dentro do <tr>
+            elem_tr.append(elem_td_reativar);
 
             /* DELETE */
-            elem_a_delete.textContent = "Desativar"; // definindo o <a href="..."> </a> 
+            elem_a_delete.textContent = "Excluir do Banco"; // definindo o <a href="..."> </a> 
             elem_a_delete.classList.add("delete","btn", "py-0", "btn-outline-danger");
             elem_a_delete.setAttribute("data-id", coop.id);
             elem_a_delete.addEventListener("click", (e) => {
                 e.preventDefault();
                 document.body.style.cursor = "wait";
                 e.target.style.opacity = "0.7";
-                deletarCooperativa(coop.id, e.target);
+                apagarCooperativaDoBanco(coop.id, e.target);
             });
             elem_td_delete.append(elem_a_delete); // colocando o <a> dentro do <td>
             elem_tr.append(elem_td_delete); // colocando o <td><a href="..."></a></td> dentro do <tr>

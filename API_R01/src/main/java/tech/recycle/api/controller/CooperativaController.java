@@ -51,7 +51,15 @@ public class CooperativaController {
 
         return ResponseEntity.status(200).body(page);
     }
-    
+
+    @GetMapping("desativadas")
+    public ResponseEntity<Page<DadosListagemCooperativa>> listarTodasCooperativasDesativadas
+    (@PageableDefault(size = 10, sort = {"id"}) Pageable paginacao){
+        var page = repository.findAllAllByAtivoFalse(paginacao).map(DadosListagemCooperativa::new);
+
+        return ResponseEntity.status(200).body(page);
+    }
+
     @GetMapping("{id}")
     public ResponseEntity acharCooperativaPorId(@PathVariable("id") Long id){
         var cooperativa = repository.findById(id).get();
@@ -94,12 +102,41 @@ public class CooperativaController {
         return ResponseEntity.status(200).body(cooperativa);
     }
 
+    @PutMapping("reativar/{id}")
+    @Transactional
+    public ResponseEntity<String> reativarCooperativa(@PathVariable("id") Long id){
+        var cooperativa = repository.findById(id);
+
+        if(cooperativa.isPresent()){
+            cooperativa.get().reativarCooperativa();
+        }
+        
+
+        return ResponseEntity.status(200).body("Cooperativa Reativada");
+    }
+
+
     @DeleteMapping("{id}")
     @Transactional
     public ResponseEntity<String> excluirCooperativa(@PathVariable("id") Long id){
-        var cooperativa = repository.findById(id).get();
-        cooperativa.excluirCooperativa();
+        var cooperativa = repository.findById(id);
+
+        if(cooperativa.isPresent()){
+            cooperativa.get().excluirCooperativa();
+        }
 
         return ResponseEntity.status(200).body("Cooperativa desativada");
+    }
+
+    @DeleteMapping("apagar/{id}")
+    @Transactional
+    public ResponseEntity<String> apagarCooperativa(@PathVariable("id") Long id){
+        var cooperativa = repository.findById(id);
+        
+        if(cooperativa.isPresent()){
+            repository.apagarDoBanco(id);
+        }
+
+        return ResponseEntity.status(200).body("Cooperativa removida do banco");
     }
 }

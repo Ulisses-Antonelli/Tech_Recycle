@@ -3,6 +3,7 @@
     --cor-azul-normal: #1B6B93;
     --cor-azul-claro: #4FC0D0;
     --cor-verde-claro: #A2FF86;
+    --cor-vermelho-escuro: #601616;
 }
 
 /* TEXTO */
@@ -94,6 +95,11 @@ a,
 .bg-verde-claro,
 .btn.bg-verde-claro{
     background-color: var(--cor-verde-claro) !important;
+}
+
+.bg-vermelho-escuro,
+.btn.bg-vermelho-escuro{
+    background-color: var(--cor-vermelho-escuro) !important;
 }
 
 /* inputs */

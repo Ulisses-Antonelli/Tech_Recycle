@@ -55,7 +55,10 @@ document.addEventListener('DOMContentLoaded', async function () {
             elem_a_delete.classList.add("delete","btn", "py-0", "btn-outline-danger");
             elem_a_delete.setAttribute("data-id", coop.id);
             elem_a_delete.addEventListener("click", (e) => {
-                deletarCooperativa(coop.id);
+                e.preventDefault();
+                document.body.style.cursor = "wait";
+                e.target.style.opacity = "0.7";
+                deletarCooperativa(coop.id, e.target);
             });
             elem_td_delete.append(elem_a_delete); // colocando o <a> dentro do <td>
             elem_tr.append(elem_td_delete); // colocando o <td><a href="..."></a></td> dentro do <tr>

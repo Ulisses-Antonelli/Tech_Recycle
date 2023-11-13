@@ -62,4 +62,8 @@ public class Cooperativa {
     public void excluirCooperativa(){
         this.ativo = false;
     }
+
+    public void reativarCooperativa(){
+        this.ativo = true;
+    }
 }

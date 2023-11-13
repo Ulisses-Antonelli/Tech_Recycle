@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             elem_tr.append(elem_td_cnpj);
 
             /* UPDATE */
-            elem_a_update.textContent = "Alterar Dados"; // criando o <a href="..."> </a> 
+            elem_a_update.textContent = "Alterar"; // criando o <a href="..."> </a> 
             elem_a_update.classList.add("btn", "py-0", "btn-outline-dark");
             elem_a_update.setAttribute("href","../../templates/cooperativas/alterarCooperativa.html?id="+coop.id) // colocando o <a> dentro do <td>
             elem_td_update.append(elem_a_update); // colocando o <td><a href="..."></a></td> dentro do <tr>

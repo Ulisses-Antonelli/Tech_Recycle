@@ -18,4 +18,7 @@ public interface CooperativaRepository extends JpaRepository<Cooperativa, Long> 
     @Query(value = "SELECT * FROM Cooperativa c WHERE c.email = ?1", nativeQuery = true)
     Optional<Cooperativa> findByEmail(String email);
 
+    @Query(value = "SELECT * FROM Cooperativa c WHERE c.cnpj = ?1", nativeQuery = true)
+    Optional<Cooperativa> findByCnpj(String cnpj);
+
 }

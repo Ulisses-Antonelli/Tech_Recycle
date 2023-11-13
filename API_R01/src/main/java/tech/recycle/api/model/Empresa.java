@@ -1,5 +1,6 @@
 package tech.recycle.api.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,6 +33,9 @@ public class Empresa {
 	private String cnpj;
     private String telefone;
 	private boolean ativo;
+ 
+    @Column(name="foto", length=1000000)
+	private byte[] foto;
 
     @Embedded
     private Endereco endereco;
@@ -39,12 +43,15 @@ public class Empresa {
     @Embedded
     private Credenciais credenciais;
 	
+    
     public Empresa(DadosCadastroEmpresa dados){
+        
         this.ativo = true;
         this.estabelecimento = dados.estabelecimento();
         this.tipoEstabelecimento = dados.tipoEstabelecimento();
         this.cnpj = dados.cnpj();
         this.telefone = dados.telefone();
+        this.foto = dados.foto();
         this.endereco = new Endereco(dados.endereco());
         this.credenciais = new Credenciais(dados.credenciais());
     }
@@ -61,6 +68,9 @@ public class Empresa {
         }
         if(dados.telefone() != null){
             this.telefone = dados.telefone();
+        }
+        if(dados.foto() != null){
+            this.foto = dados.foto();
         }
         if(dados.endereco() != null){
             this.endereco = new Endereco(dados.endereco());

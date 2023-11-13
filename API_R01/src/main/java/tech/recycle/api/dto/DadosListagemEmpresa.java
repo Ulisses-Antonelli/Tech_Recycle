@@ -4,6 +4,7 @@ import tech.recycle.api.model.Empresa;
 
 public record DadosListagemEmpresa(
         Long id,
+        byte[] foto,
         String estabelecimento,
         String segmento,
         String email,
@@ -12,6 +13,7 @@ public record DadosListagemEmpresa(
     public DadosListagemEmpresa(Empresa empresa) {
         this(
                 empresa.getId(),
+                empresa.getFoto(),
                 empresa.getEstabelecimento(),
                 empresa.getTipoEstabelecimento(),
                 empresa.getCredenciais().getEmail(),

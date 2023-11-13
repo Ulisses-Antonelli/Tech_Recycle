@@ -144,6 +144,7 @@ async function notificar(mensagem, tipo){
             break;
         case "sucesso":
             div_linha_status.style.backgroundColor = "green";
+            div_linha_status.classList.add("notific_barra_progresso")
             div_box.append(icone_sucesso);
             
             div_wrapper.style.transform = "translateY(0)";
@@ -154,6 +155,7 @@ async function notificar(mensagem, tipo){
             break;
         case "aviso":
             div_linha_status.style.backgroundColor = "yellow";
+            div_linha_status.classList.add("notific_barra_progresso")
             div_box.append(icone_aviso);
             
             div_wrapper.style.transform = "translateY(0)";

@@ -1,5 +1,6 @@
 package tech.recycle.api.controller;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,10 +45,38 @@ public class EmpresaController {
 
     @CrossOrigin
     @GetMapping("{id}")
-    public ResponseEntity acharCooperativaPorId(@PathVariable("id") Long id){
-        var cooperativa = repository.findById(id).get();
+    public ResponseEntity acharEmpresaPorId(@PathVariable("id") Long id){
+        var empresa = repository.findById(id).get();
 
-        return ResponseEntity.status(200).body(cooperativa);
+        return ResponseEntity.status(200).body(empresa);
+    }
+
+    @CrossOrigin
+    @GetMapping("email/{email}")
+    public ResponseEntity acharEmpresaPorEmail(@PathVariable("email") String email ){
+        Optional<Empresa> empresa = repository.findByEmail(email);
+
+        if(empresa.isPresent()){
+            return ResponseEntity.status(200).body(empresa.get());
+        } else {
+            HashMap<String, Boolean> disp = new HashMap<>();
+            disp.put("disponivel", true);
+            return ResponseEntity.status(200).body(disp);
+        }  
+    }
+
+    @CrossOrigin
+    @GetMapping("cnpj/{cnpj}")
+    public ResponseEntity acharEmpresaPorCNPJ(@PathVariable("cnpj") String cnpj ){
+        Optional<Empresa> empresa = repository.findByCnpj(cnpj);
+
+        if(empresa.isPresent()){
+            return ResponseEntity.status(200).body(empresa.get());
+        } else {
+            HashMap<String, Boolean> disp = new HashMap<>();
+            disp.put("disponivel", true);
+            return ResponseEntity.status(200).body(disp);
+        }  
     }
 
     @CrossOrigin

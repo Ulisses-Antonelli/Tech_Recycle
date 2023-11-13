@@ -11,5 +11,6 @@ public record DadosAtualizacaoEmpresa(
     @NotBlank String tipoEstabelecimento,
     @NotBlank @Pattern(regexp = "\\d{11}") String telefone,
     @NotBlank @Pattern(regexp = "\\d{14}") String cnpj,
+    byte[] foto, 
     @NotNull @Valid DadosEnderecoUsuario endereco
 ){}

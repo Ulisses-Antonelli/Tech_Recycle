@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
 
 import jakarta.validation.Valid;
 import tech.recycle.api.dto.DadosAtualizacaoCooperativa;
@@ -70,8 +69,20 @@ public class CooperativaController {
             HashMap<String, Boolean> disp = new HashMap<>();
             disp.put("disponivel", true);
             return ResponseEntity.status(200).body(disp);
-        }
-        
+        }  
+    }
+
+    @GetMapping("cnpj/{cnpj}")
+    public ResponseEntity acharCooperativaPorCNPJ(@PathVariable("cnpj") String cnpj ){
+        Optional<Cooperativa> cooperativa = repository.findByCnpj(cnpj);
+
+        if(cooperativa.isPresent()){
+            return ResponseEntity.status(200).body(cooperativa.get());
+        } else {
+            HashMap<String, Boolean> disp = new HashMap<>();
+            disp.put("disponivel", true);
+            return ResponseEntity.status(200).body(disp);
+        }  
     }
 
     @PutMapping("{id}")

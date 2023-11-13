@@ -96,6 +96,8 @@ a,
     background-color: var(--cor-verde-claro) !important;
 }
 
-input[type="file"] {
-    display: none;
+/* inputs */
+
+input[type='file'] {
+    color: transparent;
 }

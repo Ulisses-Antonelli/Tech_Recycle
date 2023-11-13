@@ -9,6 +9,7 @@ input_nome.setAttribute('maxlength','200');
 const input_cnpj = document.getElementById("cnpj");
 array_inputs_obrigatorios.push(input_cnpj);
 input_cnpj.setAttribute('maxlength','14');
+adicionarRegex(input_cnpj, "^[A-Za-z0-9]*$")
 
 // CEP
 const input_cep = document.getElementById("cep");
@@ -64,15 +65,28 @@ input_password.setAttribute('maxlength','64')
 const btn_submit = document.getElementById("submit");
 
 document.addEventListener('DOMContentLoaded', async function () {
-    input_cep.addEventListener('keyup', () => {
-        if(input_cep.value.length == 8){
+    console.log("06057223000171");
+    console.log("33041260065290");
+    console.log("89252431000159");
+
+    input_cep.addEventListener('keyup', (e) => {
+        if(input_cep.value.length == 8 && e.key != "ArrowLeft" && e.key != "ArrowRight"){
             input_cep.disabled = true;
             isCepValido(input_cep.value);
         }
     });
+
+    input_cnpj.addEventListener('keyup', (e) => {
+        if(input_cnpj.value.length == 14 && e.key != "ArrowLeft" && e.key != "ArrowRight"){
+            input_cnpj.disabled = true;
+            isCnpjValido(input_cnpj.value);
+        }
+    })
     
     btn_submit.addEventListener("click", (e) => {
         e.preventDefault();
+        document.body.style.cursor = "wait";
+        btn_submit.style.opacity = "0.7";
         cadastrarCooperativa();
     });
 });
@@ -80,6 +94,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 async function cadastrarCooperativa(){
     // verificação de tamanho do cep
     if(!hasTamanhoDesejado(input_cep, 8)){
+        document.body.style.cursor = "default"
+        btn_submit.style.opacity = "1";
         notificar("CEP inválido. Faltam dígitos","erro");
         throw new Error("Campo CEP invalido")
     }
@@ -88,36 +104,61 @@ async function cadastrarCooperativa(){
     array_inputs_obrigatorios.forEach(input => {
         if (isCampoVazio(input)){
             notificar("O Campo \""+input.getAttribute('placeholder')+"\" está Vazio","erro");
+            document.body.style.cursor = "default"
+            btn_submit.style.opacity = "1";
             throw new Error("Existem Campos Vázios no Formulário");
+            
         };
     });
 
-    // verificacao de tamanho da senha
     if(!hasTamanhoEntre(input_password, 8, 64)){
+        document.body.style.cursor = "default"
+        btn_submit.style.opacity = "1";
         notificar("A senha deve ter no mínimo 8 Caracteres","erro");
         throw new Error("Senha com tamanho invalido");
     }
 
     if(!hasTamanhoDesejado(input_telefone, 11)){
+        document.body.style.cursor = "default"
+        btn_submit.style.opacity = "1";
         notificar("O telefone deve ter no mínimo 11 Caracteres","erro");
         throw new Error("Telefone com tamanho invalido");
     }
 
     if(!hasTamanhoDesejado(input_cnpj, 14)){
-        notificar("O CNPJ deve ter no mínimo 14 Caracteres","erro");
+        document.body.style.cursor = "default"
+        btn_submit.style.opacity = "1";
+        notificar("O CNPJ deve ter 14 Caracteres","erro");
         throw new Error("CNPJ com tamanho invalido");
     }
 
+    // verificando se o CNPJ é valido
+    if(!isCnpjValido(input_cnpj.value)){
+        document.body.style.cursor = "default"
+        btn_submit.style.opacity = "1";
+        notificar("O CNPJ inserido é invalido","erro");
+        throw new Error("CNPJ invalido");
+    }
 
-    // verificando tamanho do email
+    // verificando se o cnpj já está cadastrado
+    let cnpj_disponivel = await isCnpjDisponivel(input_cnpj.value);
+    if(!cnpj_disponivel){
+        document.body.style.cursor = "default"
+        btn_submit.style.opacity = "1";
+        notificar("O CNPJ já está em cadastrado no sistema","erro");
+        throw new Error("CNPJ em uso");
+    }
+
+    // verificando se o email já está cadastrado
     let email_disponivel = await isEmailDisponivel(input_email.value);
-    console.log(email_disponivel)
     if(!email_disponivel){
+        document.body.style.cursor = "default"
+        btn_submit.style.opacity = "1";
         notificar("O Email já está em uso","erro");
         throw new Error("Email em uso");
     }
 
-    // montando o objeto da cooperativa
+    // montando o objeto JSON da cooperativa
     let cooperativa = {
         nome: input_nome.value,
         telefone: input_telefone.value,
@@ -151,18 +192,30 @@ async function cadastrarCooperativa(){
     })
     .then(response => {
         if (response.ok) {
+            document.body.style.cursor = "default"
+            btn_submit.style.opacity = "1";
             notificar('Cooperativa cadastrada com sucesso!','sucesso');
             setTimeout( () => {
                 location.reload();
             },5000);
         } else {
-            notificar('Erro ao cadastrar cooperativa.','erro');
+            notificar('Erro ao cadastrar cooperativa','erro');
+            document.body.style.cursor = "default"
+            btn_submit.style.opacity = "1";
         }
     })
     .catch(error => {
+        document.body.style.cursor = "default"
+        btn_submit.style.opacity = "1";
         console.error('Erro ao realizar a solicitação:', error);
     });
 }
+
+/*
+============================================================================
+|                      METODOS PARA VALIDAR INFORMAÇÕES                    |
+============================================================================
+*/
 
 function isCampoVazio(input){
     if(input.value == "" || input.value == null){
@@ -235,6 +288,74 @@ async function isEmailDisponivel(email){
     });
 
     return email_disp;
+}
+
+function isCnpjValido(cnpj){
+    let array_cnpj = [];
+
+    for(let i = 0; i < 14; i++){
+        let num = parseInt( cnpj.substring(i,(i+1)) );
+        array_cnpj.push(num);
+    }
+
+    let res_primeiro_dv;
+    let res_segundo_dv;
+    let mult_primeiro_digit = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+    let mult_segundo_digit = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+    let soma_produtos_1_dv = 0;         // dv = digito verificador
+    let soma_produtos_2_dv = 0;         
+
+    array_cnpj.forEach((num, index) => {
+        if(index < 12){
+            soma_produtos_1_dv += num * mult_primeiro_digit[index];
+            soma_produtos_2_dv += num * mult_segundo_digit[index];
+        } else if(index == 12){
+            soma_produtos_2_dv += num * mult_segundo_digit[index];
+        } 
+    });
+
+    // calculando primeiro verificador
+    res_primeiro_dv = 11 - (soma_produtos_1_dv % 11);
+    if(res_primeiro_dv >= 10){
+        res_primeiro_dv = 0;
+    }
+
+    // calculando segundo digito verificador
+    res_segundo_dv = 11 - (soma_produtos_2_dv % 11);
+    if(res_segundo_dv >= 10){
+        res_segundo_dv = 0;
+    }
+
+    // comparando se os 2 digitos calculados batem com os 2 digitos informados (2 ultimos digitos cnpj)
+    if(res_primeiro_dv === array_cnpj[12] && res_segundo_dv === array_cnpj[13]){
+        input_cnpj.style.outline = "none";
+        input_cnpj.disabled = false;
+        return true         // valido
+    } else {
+        notificar("O CNPJ é invalido","erro")
+        input_cnpj.style.outline = "2px solid #FF0000";
+        input_cnpj.disabled = false;
+        return false        // invalido
+    }
+}
+
+async function isCnpjDisponivel(cnpj){
+    // preparando requisição
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Accept', 'application/json');
+    headers.append('Origin', '*');
+
+    let cnpj_disp = await fetch("http://localhost:8080/cooperativa/cnpj/"+cnpj, {
+        method: "GET",
+        headers: headers
+    }).then(data => {
+        return data.json();
+    }).then(dados => {
+        return dados.hasOwnProperty('disponivel');
+    });
+
+    return cnpj_disp;
 }
 
 function adicionarRegex(input, valor_regex){

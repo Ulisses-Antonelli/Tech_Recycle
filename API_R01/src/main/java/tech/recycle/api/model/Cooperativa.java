@@ -54,9 +54,9 @@ public class Cooperativa {
         if(dados.cnpj() != null){
             this.cnpj = dados.cnpj();
         }
-        if(dados.endereco() != null){
-            this.endereco = new Endereco(dados.endereco());
-        }
+        
+        this.endereco = new Endereco(dados.endereco());
+        
     }
 
     public void excluirCooperativa(){

@@ -17,7 +17,7 @@ public class TratamentoDeErros {
 
     // metodo responsavel por retornar erros de pagina não encontrada
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity tratarErro404() {
+    public ResponseEntity<String> tratarErro404() {
         return ResponseEntity.notFound().build();
     }
 

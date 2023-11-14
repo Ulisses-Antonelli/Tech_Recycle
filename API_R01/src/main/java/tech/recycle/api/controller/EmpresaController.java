@@ -45,15 +45,19 @@ public class EmpresaController {
 
     @CrossOrigin
     @GetMapping("{id}")
-    public ResponseEntity acharEmpresaPorId(@PathVariable("id") Long id){
-        var empresa = repository.findById(id).get();
+    public ResponseEntity<Empresa> acharEmpresaPorId(@PathVariable("id") Long id){
+        var empresa = repository.findById(id);
 
-        return ResponseEntity.status(200).body(empresa);
+        if(empresa.isPresent()){
+            return ResponseEntity.status(200).body(empresa.get());
+        }
+
+        return ResponseEntity.status(200).body(null);
     }
 
     @CrossOrigin
     @GetMapping("email/{email}")
-    public ResponseEntity acharEmpresaPorEmail(@PathVariable("email") String email ){
+    public ResponseEntity<?> acharEmpresaPorEmail(@PathVariable("email") String email ){
         Optional<Empresa> empresa = repository.findByEmail(email);
 
         if(empresa.isPresent()){
@@ -81,17 +85,16 @@ public class EmpresaController {
 
     @CrossOrigin
     @PostMapping
-    public ResponseEntity creatEmpresa(@RequestBody @Valid DadosCadastroEmpresa data){
-        Empresa Empresa = new Empresa(data);
-        repository.save(Empresa);
-        System.out.println(data);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Empresa> creatEmpresa(@RequestBody @Valid DadosCadastroEmpresa data){
+        Empresa empresa = new Empresa(data);
+        repository.save(empresa);
+        return ResponseEntity.ok().body(empresa);
     }
 
     @CrossOrigin
     @PutMapping
     @Transactional
-    public ResponseEntity updateEmpresa(@RequestBody DadosAtualizacaoEmpresa data){
+    public ResponseEntity<String> updateEmpresa(@RequestBody DadosAtualizacaoEmpresa data){
         Optional<Empresa> optionalEmpresa = repository.findById(data.id());
         if (optionalEmpresa.isPresent()) {
             var empresa = optionalEmpresa.get();
@@ -108,8 +111,12 @@ public class EmpresaController {
     @Transactional
     public ResponseEntity<String> deleteEmpresa(@PathVariable Long id) {
         try {
-            Empresa empresa = repository.findById(id).get();
-            empresa.excluirEmpresa();
+            var empresa = repository.findById(id);
+
+            if(empresa.isPresent()){
+                empresa.get().excluirEmpresa();
+                return ResponseEntity.noContent().build();
+            }
 
             return ResponseEntity.noContent().build();
         } catch (Exception e) {

@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import jakarta.validation.Valid;
 
@@ -38,7 +36,7 @@ public class UsuarioController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroUsuario dados) {
+    public ResponseEntity<DadosCadastroUsuarioRetorno> cadastrar(@RequestBody @Valid DadosCadastroUsuario dados) {
         var usuario = new Usuario(dados);
         repository.save(usuario);
 
@@ -53,30 +51,28 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity ExibirUsuarioPorId(@PathVariable Long id) {
+    public ResponseEntity<DadosAtualizacaoUsuarioRetorno> exibirUsuarioPorId(@PathVariable Long id) {
         var usuario = repository.getReferenceById(id);
 
-        return ResponseEntity.ok(new DadosAtualizacaoUsuarioRetorno(usuario));
-        // repository.deleteById(id);
+        return ResponseEntity.ok().body(new DadosAtualizacaoUsuarioRetorno(usuario));
     }
 
     @PutMapping
     @Transactional
-    public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizacaoUsuario dados) {
+    public ResponseEntity<DadosAtualizacaoUsuarioRetorno> atualizar(@RequestBody @Valid DadosAtualizacaoUsuario dados) {
 
         var usuario = repository.getReferenceById(dados.id());
         usuario.atualizarInformacoes(dados);
 
-        return ResponseEntity.ok(new DadosAtualizacaoUsuarioRetorno(usuario));
+        return ResponseEntity.ok().body(new DadosAtualizacaoUsuarioRetorno(usuario));
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity excluir(@PathVariable Long id) {
+    public ResponseEntity<String> excluir(@PathVariable Long id) {
         var usuario = repository.getReferenceById(id);
         usuario.excluirUsuario();
 
         return ResponseEntity.noContent().build();
-        // repository.deleteById(id);
     }
 }

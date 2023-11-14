@@ -37,7 +37,7 @@ public class CooperativaController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity cadastrarCooperativa(@RequestBody @Valid DadosCadastroCooperativa dados){
+    public ResponseEntity<Cooperativa> cadastrarCooperativa(@RequestBody @Valid DadosCadastroCooperativa dados){
         var cooperativa = new Cooperativa(dados);
         repository.save(cooperativa);
 
@@ -61,10 +61,14 @@ public class CooperativaController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity acharCooperativaPorId(@PathVariable("id") Long id){
-        var cooperativa = repository.findById(id).get();
+    public ResponseEntity<Cooperativa> acharCooperativaPorId(@PathVariable("id") Long id){
+        var cooperativa = repository.findById(id);
 
-        return ResponseEntity.status(200).body(cooperativa);
+        if(cooperativa.isPresent()){
+            return ResponseEntity.status(200).body(cooperativa.get());
+        }
+
+        return ResponseEntity.status(200).body(null);
     }
 
     @GetMapping("email/{email}")
@@ -95,11 +99,16 @@ public class CooperativaController {
 
     @PutMapping("{id}")
     @Transactional
-    public ResponseEntity atualizarCooperativa(@RequestBody @Valid DadosAtualizacaoCooperativa dados){
-        var cooperativa = repository.findById(dados.id()).get();
-        cooperativa.atualizarInformacoes(dados);
+    public ResponseEntity<Cooperativa> atualizarCooperativa(@RequestBody @Valid DadosAtualizacaoCooperativa dados){
+        var cooperativa = repository.findById(dados.id());
 
-        return ResponseEntity.status(200).body(cooperativa);
+        if(cooperativa.isPresent()){
+            cooperativa.get().atualizarInformacoes(dados);
+            return ResponseEntity.status(200).body(cooperativa.get());
+        }
+        
+
+        return ResponseEntity.status(200).body(null);
     }
 
     @PutMapping("reativar/{id}")

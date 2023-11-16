@@ -9,12 +9,16 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ColumnResult;
+import jakarta.persistence.ConstructorResult;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedNativeQuery;
+import jakarta.persistence.SqlResultSetMapping;
 import jakarta.persistence.Table;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -22,8 +26,33 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import tech.recycle.api.dto.DadosAtualizacaoPromocao;
 import tech.recycle.api.dto.DadosCadastroPromocao;
+import tech.recycle.api.dto.DadosListagemPromocao;
 
-
+@NamedNativeQuery(
+    name = "findPromocaoByEmpresa",
+    query = "SELECT p.id, p.preco, p.descricao, e.estabelecimento AS nome_empresa, e.foto"+
+            "FROM Promocao p "+
+            "INNER JOIN Empresa e "+
+            "ON p.empresa_criadora = e.id"+
+            "ORDER BY p.quant_vendidos DESC",
+    resultClass = DadosListagemPromocao.class,
+    resultSetMapping = "DadosListagemPromocao_mapping"
+)
+@SqlResultSetMapping(
+    name = "DadosListagemPromocao_mapping",
+    classes = {
+        @ConstructorResult (
+            targetClass = DadosListagemPromocao.class,
+            columns = {
+                @ColumnResult(name = "id", type = Long.class),
+                @ColumnResult(name = "preco", type = String.class),
+                @ColumnResult(name = "descricao", type = String.class),
+                @ColumnResult(name = "nome_empresa", type = String.class),
+                @ColumnResult(name = "foto", type = byte[].class)
+            }
+        )
+    }
+)
 @Table(name = "Promocao")
 @Entity
 @AllArgsConstructor

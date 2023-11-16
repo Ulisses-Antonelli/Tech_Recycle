@@ -58,6 +58,9 @@ adicionarRegex(input_telefone, "^[0-9]*$")
 
 const btn_submit = document.getElementById("submit");
 
+// Vamos guardar o CNPJ que acabou de ser puxado.
+// O ADMIN precisa conseguir deixar o CNPJ inalterado, mas deixando o mesmo irá aparecer que já está cadastrado (A Propria COOP)
+// Vamos então guardar o CNPJ em um let pra ser usado na verificação
 let CNPJ_ATUAL;
 
 document.addEventListener('DOMContentLoaded', function () {    
@@ -88,13 +91,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         CNPJ_ATUAL = cooperativa.cnpj
     });
-
-    // Vamos guardar o CNPJ que acabou de ser puxado.
-    // O ADMIN precisa conseguir deixar o CNPJ inalterado, mas deixando o mesmo irá aparecer que já está cadastrado (A Propria COOP)
-    // Vamos então guardar o CNPJ em um var pra ser usado na verificação
-    
-    
-    console.log(CNPJ_ATUAL)
 
     console.log("29553960000160");
     console.log("02543945000185");

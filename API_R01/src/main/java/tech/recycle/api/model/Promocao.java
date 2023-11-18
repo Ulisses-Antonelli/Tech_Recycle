@@ -29,11 +29,12 @@ import tech.recycle.api.dto.DadosCadastroPromocao;
 import tech.recycle.api.dto.DadosListagemPromocao;
 
 @NamedNativeQuery(
-    name = "findPromocaoByEmpresa",
+    name = "findAllPromocaoByEmpresa",
     query = "SELECT p.id, p.preco, p.descricao, e.estabelecimento AS nome_empresa, e.foto"+
             "FROM Promocao p "+
             "INNER JOIN Empresa e "+
             "ON p.empresa_criadora = e.id"+
+            "WHERE p.empresa_criadora = :idEmpresa"+
             "ORDER BY p.quant_vendidos DESC",
     resultClass = DadosListagemPromocao.class,
     resultSetMapping = "DadosListagemPromocao_mapping"

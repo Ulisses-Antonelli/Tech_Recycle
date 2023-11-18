@@ -1,23 +1,14 @@
 package tech.recycle.api.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import tech.recycle.api.model.Promocao;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-public record DadosListagemPromocao(
-    Long id,
-    @NotBlank Float preco,
-    @NotBlank String descricao,
-    @NotBlank String nome_empresa,
-    @NotBlank byte[] foto
-
-){
-    public DadosListagemPromocao(Promocao promocao){
-        this(
-            promocao.getId(),
-            promocao.getPreco(),
-            promocao.getDescricao(),
-            promocao.getEmpresa_criadora(),
-            promocao.get
-        )
-    }
+@AllArgsConstructor
+@Getter
+public class DadosListagemPromocao{
+    private Long id;
+    private Float preco;
+    private String descricao;
+    private String nome_empresa;
+    private byte[] foto;
 }

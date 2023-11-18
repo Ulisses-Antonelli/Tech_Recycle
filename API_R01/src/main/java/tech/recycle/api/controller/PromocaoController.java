@@ -36,10 +36,10 @@ public class PromocaoController {
     private PromocaoRepository repository;
 
     @CrossOrigin
-    @GetMapping
+    @GetMapping("buscaPorEmpresa/{id}")
     public ResponseEntity<Page<DadosListagemPromocao>> listarPromocoesDaEmpresa
-    (Long id, @PageableDefault(size = 10, sort = {"id"}) Pageable paginacao){
-        var page = repository.findAll(paginacao).map(DadosListagemPromocao::new);
+    (@PathVariable("id") Long id, @PageableDefault(size = 10, sort = {"id"}) Pageable paginacao){
+        var page = repository.findAllPromocaoByEmpresa(id, paginacao);
 
         return ResponseEntity.status(200).body(page);
     }

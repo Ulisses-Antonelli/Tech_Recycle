@@ -20,6 +20,10 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Pontos {
     
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
     private Integer quant_pontos;
 
     @ManyToOne

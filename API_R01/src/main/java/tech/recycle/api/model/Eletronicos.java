@@ -23,4 +23,9 @@ public class Eletronicos {
     private String nome;
 
     private Integer valor_pontos;
+
+    public Eletronicos(String nome, Integer valor_pontos){
+        this.nome = nome;
+        this.valor_pontos = valor_pontos;
+    }
 }

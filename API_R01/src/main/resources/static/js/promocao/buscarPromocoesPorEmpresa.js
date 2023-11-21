@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     headers.append('Accept', 'application/json');
     headers.append('Origin', '*');
 
-    await fetch('http://localhost:8080/promocao/buscaPorEmpresa/2', {
+    await fetch('http://localhost:8080/promocao/buscaPorEmpresa/1', {
         mode: 'cors',
         method: 'GET',
         headers: headers

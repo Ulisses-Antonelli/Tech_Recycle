@@ -7,16 +7,18 @@ document.addEventListener('DOMContentLoaded', async function () {
     headers.append('Accept', 'application/json');
     headers.append('Origin', '*');
 
-    await fetch('http://localhost:8080/promocao/buscaPorEmpresa/1', {
+    await fetch('http://localhost:8080/promocao/buscaPorEmpresa/2', {
         mode: 'cors',
         method: 'GET',
         headers: headers
     }).then(data => {
         return data.json()
     }).then(dados => {
+        
         let promocoes = dados.content;
+        console.log(promocoes)
 
-        for(const promocao in promocoes){
+        promocoes.forEach(promocao => {
             let CARD_PROMO = document.createElement('div');
             CARD_PROMO.classList.add('card','p-3');
             CARD_PROMO.setAttribute('data-cod', promocao.id);
@@ -35,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             PROMO_DESCRICAO.classList.add('promo-descricao');
 
             let PROMO_PRECO = document.createElement('h6');
-            PROMO_PRECO.textContent = promocao.preco;
+            PROMO_PRECO.textContent = promocao.preco + " Pontos";
             PROMO_PRECO.classList.add('promo-preco');
 
             /**/ 
@@ -45,6 +47,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             CARD_PROMO.append(PROMO_PRECO);
 
             LISTA_CARDS.append(CARD_PROMO);
-        }
+        });
     });
 });

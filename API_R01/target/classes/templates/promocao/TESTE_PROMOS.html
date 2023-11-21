@@ -10,7 +10,6 @@
         <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300;400;500;600;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="../../static/css/theme.css">
         <title> TESTE </title>
-        <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <style>
             body{
@@ -105,26 +104,25 @@
         <div class="container-fluid d-flex flex-row mb-5">
             <div id="cadastar-promo" class="m-5 p-5 bg-white w-100">
                 <h3 class="mb-5"> NOVA PROMOCAO </h3>
-                <form class="d-flex flex-column w-100" method="post" action="http://localhost:8080/promocao" modelAttribute="DadosCadastroPromocao">
+                <form class="d-flex flex-column w-100" method="post" action="http://localhost:8080/promocao" modelAttribute="Promocao">
                     <div class="d-flex w-75 align-items-center mb-3">
                         <label class="w-25" for="lbl-desc"> Descrição Da Promoção </label>
-                        <input class="w-75 form-control" id="lbl-desc" type="text" name="descricao">
+                        <input class="w-75 form-control" id="descricao" type="text" name="descricao">
                     </div>
                     
                     <div class="d-flex w-75 align-items-center mb-3">
                         <label class="w-25" for="lbl-preco"> Preço Da Promoção</label> 
-                        <input class="w-25 form-control" id="lbl-preco" type="text" name="preco">
+                        <input class="w-25 form-control" id="preco" type="text" name="preco">
                     </div>
                     
+                    <input type="hidden" id="empresa" name="empresa_id" value="2">
     
-                    <input type="hidden" name="data_criacao" value="">
-                    <input type="hidden" name="empresa_criadora" value="">
-    
-                    <input type="submit" class="w-25 mt-3 form-control" value="CRIAR PROMO">
+                    <a id="btn_submit" type="submit" class="w-25 mt-3 form-control btn bg-verde-claro"> Criar </a>
                 </form>
             </div>
             
         </div>
         <script src="../../static/js/promocao/buscarPromocoesPorEmpresa.js"></script>
+        <script src="../../static/js/promocao/cadastroPromocao.js"></script>
     </body>
 </html>

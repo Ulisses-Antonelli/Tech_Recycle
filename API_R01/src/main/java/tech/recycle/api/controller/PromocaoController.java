@@ -25,6 +25,7 @@ import tech.recycle.api.dto.DadosCadastroPromocao;
 import tech.recycle.api.dto.DadosAtualizacaoPromocao;
 import tech.recycle.api.dto.DadosListagemPromocao;
 import tech.recycle.api.model.Promocao;
+import tech.recycle.api.repository.EmpresaRepository;
 import tech.recycle.api.repository.PromocaoRepository;
 
 @RestController
@@ -34,6 +35,18 @@ public class PromocaoController {
 
     @Autowired
     private PromocaoRepository repository;
+
+    @Autowired
+    private EmpresaRepository empresa_repo;
+
+    @CrossOrigin
+    @GetMapping
+    public ResponseEntity<Page<DadosListagemPromocao>> listaTodasPromocoes
+    (@PageableDefault(size = 10, sort = {"id"}) Pageable paginacao){
+        var page = repository.findAllPromocao(paginacao);
+
+        return ResponseEntity.status(200).body(page);
+    }
 
     @CrossOrigin
     @GetMapping("buscaPorEmpresa/{id}")
@@ -47,9 +60,15 @@ public class PromocaoController {
     @PostMapping
     @Transactional
     public ResponseEntity<Promocao> cadastrarPromocao(@RequestBody @Valid DadosCadastroPromocao dados){
-        var promocao = new Promocao(dados);
+        var empresa = empresa_repo.findById(dados.empresa_id());
 
-        return ResponseEntity.status(201).body(promocao);
+        if(empresa.isPresent()){
+            Promocao promocao = new Promocao(dados.preco(), dados.descricao(), dados.data_criacao(), empresa.get());
+            repository.save(promocao);
+            return ResponseEntity.status(201).body(promocao);
+        }
+        
+        return ResponseEntity.status(404).body(null);
     }
 
     @DeleteMapping

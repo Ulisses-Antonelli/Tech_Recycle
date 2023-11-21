@@ -24,21 +24,34 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import tech.recycle.api.dto.DadosAtualizacaoPromocao;
-import tech.recycle.api.dto.DadosCadastroPromocao;
 import tech.recycle.api.dto.DadosListagemPromocao;
 
+// Todas as promoções cadastradas na tabela "Promocao"
 @NamedNativeQuery(
-    name = "findAllPromocaoByEmpresa",
-    query = "SELECT p.id, p.preco, p.descricao, e.estabelecimento AS nome_empresa, e.foto"+
+    name = "findAllPromocao",
+    query = "SELECT p.id, p.preco, p.descricao, e.estabelecimento AS nome_empresa, e.foto "+
             "FROM Promocao p "+
             "INNER JOIN Empresa e "+
-            "ON p.empresa_criadora = e.id"+
-            "WHERE p.empresa_criadora = :idEmpresa"+
+            "ON p.empresa_id = e.id "+
             "ORDER BY p.quant_vendidos DESC",
     resultClass = DadosListagemPromocao.class,
     resultSetMapping = "DadosListagemPromocao_mapping"
 )
+// Todas as promoções de uma empresa especifica
+@NamedNativeQuery(
+    name = "findAllPromocaoByEmpresa",
+    query = "SELECT p.id, p.preco, p.descricao, e.estabelecimento AS nome_empresa, e.foto "+
+            "FROM Promocao p "+
+            "INNER JOIN Empresa e "+
+            "ON p.empresa_id = e.id "+
+            "WHERE p.empresa_id = ?1 "+
+            "ORDER BY p.quant_vendidos DESC",
+    resultClass = DadosListagemPromocao.class,
+    resultSetMapping = "DadosListagemPromocao_mapping"
+)
+// mapeando o retorno da query para o DTO de listagem
 @SqlResultSetMapping(
     name = "DadosListagemPromocao_mapping",
     classes = {
@@ -46,7 +59,7 @@ import tech.recycle.api.dto.DadosListagemPromocao;
             targetClass = DadosListagemPromocao.class,
             columns = {
                 @ColumnResult(name = "id", type = Long.class),
-                @ColumnResult(name = "preco", type = String.class),
+                @ColumnResult(name = "preco", type = Integer.class),
                 @ColumnResult(name = "descricao", type = String.class),
                 @ColumnResult(name = "nome_empresa", type = String.class),
                 @ColumnResult(name = "foto", type = byte[].class)
@@ -59,12 +72,13 @@ import tech.recycle.api.dto.DadosListagemPromocao;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 public class Promocao {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Float preco;
+    private Integer preco;
     private String descricao;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
@@ -77,14 +91,17 @@ public class Promocao {
 
     @ManyToOne
     @JoinColumn(name = "empresa_id", nullable = false)
-    private Empresa empresa_criadora;
+    private Empresa empresa;
 
-    public Promocao(DadosCadastroPromocao dados){
-        this.preco = dados.preco();
-        this.descricao = dados.descricao();
-        this.data_criacao = dados.data_criacao();
+    public Promocao(Integer preco, 
+                    String descricao, 
+                    LocalDate data_criacao,
+                    Empresa empresa){
+        this.preco = preco;
+        this.descricao = descricao;
+        this.data_criacao = data_criacao;
         this.quant_vendidos = 0;
-        this.empresa_criadora = dados.empresa_criadora();
+        this.empresa = empresa;
     }
 
     public void atualizarPromocao(@Valid DadosAtualizacaoPromocao dados){

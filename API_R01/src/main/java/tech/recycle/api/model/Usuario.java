@@ -1,5 +1,7 @@
 package tech.recycle.api.model;
 
+import java.util.Set;
+
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -38,8 +40,14 @@ public class Usuario {
 
     private boolean ativo;
 
+    private Integer quant_pontos;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Pontos> listaPontosRecebidos;
+
     public Usuario(DadosCadastroUsuario dados) {
         this.ativo = true;
+        this.quant_pontos = 0;
         this.nome = dados.nome();
         this.telefone = dados.telefone();
         this.cpf = dados.cpf();

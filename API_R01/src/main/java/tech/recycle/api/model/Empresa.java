@@ -47,12 +47,13 @@ public class Empresa {
     @Embedded
     private Credenciais credenciais;
 
-    @OneToMany(mappedBy = "empresa_criadora", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Promocao> listaPromocoes;
-	
+
+    @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Pontos> listaPontosConcedidos;
     
     public Empresa(DadosCadastroEmpresa dados){
-        
         this.ativo = true;
         this.estabelecimento = dados.estabelecimento();
         this.tipoEstabelecimento = dados.tipoEstabelecimento();

@@ -23,7 +23,7 @@
 
       #inputs_adicionar_eletronico{
         display: grid;
-        grid-template-columns: 4fr 1fr 3fr;
+        grid-template-columns: 5fr 1fr 1fr;
         gap: 1vh;
       }
     </style>
@@ -87,7 +87,7 @@
 
     <main class="h-auto w-100 bg-azul-escuro p-5 d-flex flex-column align-items-center justify-content-center">
         <!-- FORM BUSCAR USUARIO POR CPF-->
-        <form id="form_buscar_cpf" class="col-md-7 bg-white border rounded rounded-5 p-3 d-flex flex-column justify-content-start align-items-center">
+        <form id="form_buscar_cpf" class="col-md-8 bg-white border rounded rounded-5 p-3 d-flex flex-column justify-content-start align-items-center">
             <h2 class="fw-bold mt-3 mb-4 px-3 text-dark">Buscar Usuário</h2>
             <span class="fw-bold fs-7 mb-4 px-3 text-dark"> Insira o CPF do Usuário que está fazendo o descarte </span>
             <div class="input-2 d-flex align-items-center mx-2" style="width: 30%;">
@@ -99,9 +99,9 @@
         <hr style="width: 50%; background-color: white; height: 2px; margin: 5vh 2vh; border-radius: 15px;"></hr>
         
         <!-- FORM CARRINHO DE DESCARTE DO USUARIO-->
-        <form id="form_carrinho" class="col-md-7 bg-white border rounded rounded-5 p-3 d-flex flex-column justify-content-start align-items-center">
+        <form id="form_carrinho" class="col-md-8 bg-white border rounded rounded-5 p-3 d-flex flex-column justify-content-start align-items-center">
             
-            <div id="box_eletornicos" class="d-flex flex-column align-items-center" style="height: 75vh; width: 95%;">
+            <div id="box_eletornicos" class="d-flex flex-column align-items-center" style="height: 50vw; width: 95%;">
                 <h2 class="fw-bold mt-3 mb-4 px-3 text-dark">Contabilizar Pontos</h2>
 
                 <!-- INPUTS ADICIONAR ELETRONICO AO CARRINHO -->
@@ -110,19 +110,18 @@
                     <div class="mb-3 d-flex flex-column">
                         <label for="eletronico" class="form-label"> Eletrônico </label>
                         <select id="eletronico" class="form-control" aria-label="Default select example" name="curso" required>
-                            <option selected disabled>Eletrônico </option>
-                            <option value="2">Geladeira</option>
+                            <option selected disabled value="">--Selecione--</option>
                         </select>
                     </div>
 
                     <div class="mb-3">
                         <label for="quantidade" class="form-label"> Quantidade </label>
-                        <input type="text" class="form-control" id="quantidade" name="quantidade" required>
+                        <input type="number" class="form-control" id="quantidade" min="1" name="quantidade" required>
                     </div>
 
                     <div class="mb-3 d-flex flex-column">
                         <br>
-                        <button id="add" type="submit" class="btn bg-verde-claro mt-2 px-5 align-self-end"> Adicionar </button>
+                        <a id="btn_add" type="submit" class="btn bg-verde-claro mt-2 px-5 align-self-end"> Adicionar </a>
                     </div>
                 </div>  
                 
@@ -134,8 +133,9 @@
                         <thead>
                           <tr style="border: 2px solid #dee2e6;">
                             <th scope="col" style="width:40%;">Nome</th>
-                            <th scope="col" style="width:30%;">Quantidade</th>
-                            <th scope="col" style="width:30%;">Pontos por Unidade</th>
+                            <th scope="col" style="width:20%;">Quantidade</th>
+                            <th scope="col" style="width:30%;">Pontos (Unid.)</th>
+                            <th scope="col" style="width:10%;"></th>
                           </tr>
                         </thead>
                         <tbody id="tbl-corpo">
@@ -148,11 +148,11 @@
                 <!-- TOTAL DE PONTOS QUE SERÃO ADICIONADOS -->
                 <div style="width: 95%; display: flex;" class="">
                     <h4 style="width: 85%; text-align: end;" class="fw-bold text-black"> Total de Pontos: </h4>
-                    <h4 style="width: 15%; text-align: end;" id="resultado_total_pontos" class="fw-bold text-dark"> 500000</h4>
+                    <h4 style="width: 15%; text-align: end;" id="resultado_total_pontos" class="fw-bold text-dark"> 0</h4>
                 </div>
 
                 <!-- BOTÃO LANÇAR PONTOS-->
-                <a id="submit" type="submit" class="btn bg-verde-claro align-self-end mb-2 mx-2 my-5 w-50 fw-bold">Enviar Pontos</a>
+                <a id="submit" type="submit" class="btn bg-verde-claro align-self-end mb-2 mx-2 my-5 w-25 fw-bold">Enviar Pontos</a>
             </div>
         </form>
     </main>

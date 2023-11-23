@@ -40,7 +40,6 @@ public class CooperativaController {
     public ResponseEntity<Cooperativa> cadastrarCooperativa(@RequestBody @Valid DadosCadastroCooperativa dados){
         var cooperativa = new Cooperativa(dados);
         repository.save(cooperativa);
-
         return ResponseEntity.status(201).body(cooperativa);
     }
 
@@ -48,7 +47,6 @@ public class CooperativaController {
     public ResponseEntity<Page<DadosListagemCooperativa>> listarTodasCooperativas
     (@PageableDefault(size = 10, sort = {"id"}) Pageable paginacao){
         var page = repository.findAllAllByAtivoTrue(paginacao).map(DadosListagemCooperativa::new);
-
         return ResponseEntity.status(200).body(page);
     }
 
@@ -56,7 +54,6 @@ public class CooperativaController {
     public ResponseEntity<Page<DadosListagemCooperativa>> listarTodasCooperativasDesativadas
     (@PageableDefault(size = 10, sort = {"id"}) Pageable paginacao){
         var page = repository.findAllAllByAtivoFalse(paginacao).map(DadosListagemCooperativa::new);
-
         return ResponseEntity.status(200).body(page);
     }
 

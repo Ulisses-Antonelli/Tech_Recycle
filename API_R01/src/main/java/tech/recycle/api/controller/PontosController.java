@@ -1,6 +1,8 @@
 package tech.recycle.api.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +27,7 @@ public class PontosController {
     @Autowired
     private UsuarioRepository usuario_repo;
 
+    /* 
     @CrossOrigin
     @GetMapping
     public ResponseEntityity<Page<Pontos>> listaTodasTransacoes
@@ -32,7 +35,9 @@ public class PontosController {
         var page = repository.findAllPromocao(paginacao);
 
         return ResponseEntity.status(200).body(page);
+        
     }
+    */
     
 
 

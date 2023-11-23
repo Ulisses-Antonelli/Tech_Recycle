@@ -7,14 +7,29 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import tech.recycle.api.model.Privilegio;
+import tech.recycle.api.model.Usuario;
 import tech.recycle.api.model.Eletronicos;
+import tech.recycle.api.model.Empresa;
 import tech.recycle.api.repository.EletronicosRepository;
+import tech.recycle.api.repository.EmpresaRepository;
+import tech.recycle.api.repository.UsuarioRepository;
+import tech.recycle.api.dto.DadosCadastroEmpresa;
+import tech.recycle.api.dto.DadosEnderecoUsuario;
+import tech.recycle.api.dto.DadosCredenciaisUsuario;
+import tech.recycle.api.dto.DadosCadastroUsuario;
 
 @Configuration
 public class LoadDatabase {
     
     @Autowired
     private EletronicosRepository repository;
+
+    @Autowired
+    private EmpresaRepository empresa_repo;
+
+    @Autowired
+    private UsuarioRepository usuario_repo;
 
     @Bean
     CommandLineRunner initTabelaEletronicos(){
@@ -50,6 +65,41 @@ public class LoadDatabase {
 
                 repository.saveAll(Arrays.asList(e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14,
                                                 e15, e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27));
+            }
+
+            // Empresa 
+            if(empresa_repo.findAll().size() == 0){
+                DadosEnderecoUsuario enderec = new DadosEnderecoUsuario("Rua 123", "Jardim Direita", "23232344","22","Loja","São Paulo", "SP");
+                DadosCredenciaisUsuario credenc = new DadosCredenciaisUsuario("Lucas@gmail.com", "12345678");
+                byte[] foto = null;
+
+                DadosCadastroEmpresa dto1 = new DadosCadastroEmpresa("Lucas Calçados", 
+                                                                    "Calçados", 
+                                                                    "06057223000171", 
+                                                                    "11951441190", 
+                                                                    foto, 
+                                                                    enderec, 
+                                                                    credenc);
+
+                Empresa empresa = new Empresa(dto1);
+                empresa_repo.save(empresa);
+            }
+
+            //  Usuario
+            if(usuario_repo.findAll().size() == 0){
+                DadosEnderecoUsuario enderec = new DadosEnderecoUsuario("Rua 123", "Jardim Direita", "23232344","22","Loja","São Paulo", "SP");
+                DadosCredenciaisUsuario credenc = new DadosCredenciaisUsuario("Lucas@gmail.com", "12345678");
+
+                DadosCadastroUsuario dto2 = new DadosCadastroUsuario("Ulisses Antonelli", 
+                                                                    "951441190", 
+                                                                    "91319218920", 
+                                                                    Privilegio.USUARIO, 
+                                                                    credenc, 
+                                                                    enderec);
+
+                Usuario usuario = new Usuario(dto2);
+                usuario_repo.save(usuario);
+
             }
                 
         };

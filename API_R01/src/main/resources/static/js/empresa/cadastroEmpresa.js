@@ -244,12 +244,12 @@ async function cadastrarEmpresa(){
         if (response.ok) {
             document.body.style.cursor = "default"
             btn_submit.style.opacity = "1";
-            notificar('Cooperativa cadastrada com sucesso!','sucesso');
+            notificar('Empresa cadastrada com sucesso!','sucesso');
             setTimeout( () => {
                 location.reload();
             },5000);
         } else {
-            notificar('Erro ao cadastrar cooperativa','erro');
+            notificar('Erro ao cadastrar Empresa','erro');
             document.body.style.cursor = "default"
             btn_submit.style.opacity = "1";
         }

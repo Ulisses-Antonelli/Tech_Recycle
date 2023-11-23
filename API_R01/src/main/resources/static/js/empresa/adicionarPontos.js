@@ -37,25 +37,22 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     BTN_SUBMIT.addEventListener('click', (e) => {
         e.preventDefault();
-        
         if(contadorItemsCarrinho = 0){
             throw new Error("Carrinho vazio, Não houveram descartes");
         }
-
+        document.body.style.cursor = "wait";
+        BTN_SUBMIT.style.opacity = "0.7";
         enviarPontos();
     });
 
     BTN_ADICIONAR_CARRINHO.addEventListener('click', (e) => {
         e.preventDefault();
-
         if(isCampoVazio(SELECT_ELETRONICO)){
             throw new Error("Selecione o Eletronico que está sendo descartado")
         }
-
         if(isCampoVazio(INPUT_QUANTIDADE)){
             throw new Error("Diga a quantidade que está sendo descartada")
         }
-
         adicionarAoCarrinho(e);
         e.stopPropagation();
     });
@@ -107,8 +104,8 @@ function adicionarAoCarrinho(e){
     elem_tr.append(elem_td_remover);
 
     CARRINHO_CORPO.append(elem_tr);
-
-    // adicionando o evento    
+ 
+    // adicionando o evento de remoção do item do Carrinho
     elem_a_remover.addEventListener('click', (e) => {
         let item = document.getElementById(contadorItemsCarrinho);
         elem_tr.remove();
@@ -125,8 +122,6 @@ function adicionarAoCarrinho(e){
     e.stopPropagation();
 }
 
-function retirarItemDoCarrinho(codigo){}
-    
 
 function atualizarTotalPontos(){
     console.log(totalPontos)
@@ -140,7 +135,42 @@ function atualizarTotalPontos(){
 
 async function enviarPontos(){
     if(totalPontos > 0){
-        
+        // montando objeto
+        let pontos = {
+            quant_pontos: totalPontos,
+            empresa: 1,
+            usuario: 1,
+            data_transacao: new Date().toJSON().slice(0, 10)
+        }
+
+        // preparando requisição
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Accept', 'application/json');
+        headers.append('Origin', '*');
+
+        await fetch("http://localhost:8080/pontos", {
+            mode: 'cors',
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(pontos)
+        })
+        .then(response => {
+            if(response.ok){
+                document.body.style.cursor = "default"
+                BTN_SUBMIT.style.opacity = "1";
+                notificar("Pontos enviados com sucesso","sucesso")
+                setTimeout( () => {
+                    location.reload();
+                },5000);
+            } else {
+                document.body.style.cursor = "default"
+                BTN_SUBMIT.style.opacity = "1";
+                notificar("Erro ao fazer requisição","erro")
+            }
+        })
+    } else {
+        notificar("Informe no mínimo 1 produto descartado","erro")
     }
 }
 

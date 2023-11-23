@@ -35,4 +35,14 @@ public class Pontos {
     private Usuario usuario;    
 
     private LocalDate data_transacao;
+
+    public Pontos(Integer quant_pontos,
+                    Empresa empresa,
+                    Usuario usuario,
+                    LocalDate data){
+        this.quant_pontos = quant_pontos;
+        this.empresa = empresa;
+        this.usuario = usuario;
+        this.data_transacao = data;
+    }
 }

@@ -94,6 +94,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/porId/{id}")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<?> ExibirUsuarioPorId(@PathVariable Long id) {
         var usuario = repository.getReferenceById(id);
         return ResponseEntity.ok(new DadosAtualizacaoUsuarioRetorno(usuario));

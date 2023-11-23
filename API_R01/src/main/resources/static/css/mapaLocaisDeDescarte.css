@@ -13,8 +13,52 @@ main{
     padding: 40px;
 }
 
-hr{
-    margin: 5px 5px;
+
+.container-mapa{
+    display: grid;
+    grid-template-rows: 70px 20px 600px;
+    grid-template-columns: 50px 300px 50px 700px;
+    background-color: rgb(255, 255, 255);
+}
+
+.titulo-mapa{
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.5rem;
+    color: #fff;
+    grid-column: 2/3;
+    grid-row: 1/2;
+    justify-self: flex-start;
+    align-self: center;
+    margin-left: 20px;
+}
+
+.lojas-pontos{
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.2rem;
+    color: #fff;
+    grid-column: 3/5;
+    grid-row: 1/2;
+    justify-self: flex-start;
+    align-self: center;
+    margin-left: 20px;
+}
+
+.container-lista-lojas{
+    display: grid;
+    grid-template-rows: repeat(4, 150px);
+    grid-template-columns: max-content;
+    grid-row: 3/4;
+    grid-column: 2/3;
+}
+
+.loja{
+    display: grid;
+    grid-template-rows: 40px repeat(5, 22px);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    color: #fff;
+    width: 300px;
+    height: max-content;
 }
 
 .atualizar-dados{
@@ -45,128 +89,3 @@ hr{
     grid-row: 1/2;
 }
 
-.cpf{
-    grid-row: 2/3;
-}
-
-.cep{
-    grid-row: 4/5;
-}
-
-.rua{
-    grid-row: 3/4;
-}
-
-.numero{
-    grid-row: 5/6;
-}
-
-.complemento{
-    grid-row: 6/7;
-}
-
-.bairro{
-    grid-row: 7/8;
-}
-
-.cidade{
-    grid-row: 8/9;
-}
-
-.uf{
-    grid-row: 1/2;
-}
-
-.celular{
-    grid-row: 2/3;
-}
-
-.email{
-    grid-row: 3/4;
-}
-
-.nova-senha{
-    grid-row: 4/5;
-}
-
-.confirmar-senha{
-    grid-row: 5/6;
-}
-
-#salvarDados{
-    margin-top: 25px;
-    align-self: center;
-    grid-row: 6/7;
-}
-
-#excluirDados{
-    margin-top: 25px;
-    align-self: center;
-    grid-row: 7/8;
-}
-
-.output-nome{
-    font-weight: 600;
-    margin: 0px 7px;
-    grid-row: 1/2;
-}
-
-.output-cpf{
-    font-weight: 600;
-    margin: 0px 7px;
-    grid-row: 2/3;
-}
-
-.output-rua{
-    font-weight: 600;
-    margin: 0px 7px;
-    grid-row: 3/4;
-}
-
-.output-cep{
-    font-weight: 600;
-    margin: 0px 7px;
-    grid-row: 4/5;
-}
-
-.output-numero{
-    font-weight: 600;
-    margin: 0px 7px;
-    grid-row: 5/6;
-}
-
-.output-complemento{
-    font-weight: 600;
-    margin: 0px 7px;
-    grid-row: 6/7;
-}
-
-.output-bairro{
-    font-weight: 600;
-    margin: 0px 7px;
-    grid-row: 7/8;
-}
-
-.output-cidade{
-    font-weight: 600;
-    margin: 0px 7px;
-    grid-row: 8/9;
-}
-
-.output-uf{
-    font-weight: 600;
-    margin: 0px 7px;
-    grid-row: 9/10;
-}
-
-.output-celular{
-    font-weight: 600;
-    margin: 0px 7px;
-    grid-row: 10/11;
-}
-
-.output-email{
-    font-weight: 600;
-    margin: 0px 7px;
-    grid-row: 11/12;
-}

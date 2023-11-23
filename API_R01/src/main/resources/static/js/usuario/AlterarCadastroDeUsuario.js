@@ -71,17 +71,19 @@ input_password.setAttribute('maxlength','64')
 adicionarInputPreenchido(input_password);
 
 const btn_submit = document.getElementById("salvarDados");
+const usuarioArmazenado = JSON.parse(localStorage.getItem("usuario"));
 
 document.addEventListener('DOMContentLoaded', async function () {
 
-    array_inputs_preenchidos.forEach(input => {
+    exibirDadosUsuario(usuarioArmazenado); 
 
+    array_inputs_preenchidos.forEach(input => {
         if(input === input_cep || input === input_cpf){
             input.addEventListener('keyup', (evento) =>{
                 if (input.value.length == 8 && evento.key != "ArrowLeft" && evento.key != "ArrowRight"){
-                    isCepValido(input.value);
+                    isCepValido(input);
                 } else if (input.value.length == 11 && evento.key != "ArrowLeft" && evento.key != "ArrowRight"){
-                    isCpfValido(input_cpf.value);
+                    isCpfValido(input);
                 }
             })
         }
@@ -150,11 +152,10 @@ async function alterarCadastroDeUsuario(){
 
     })
     
-    const usuarioLogado = JSON.parse(localStorage.getItem("usuario"));
-
+    
     // montando o objeto JSON do Usuario
     var usuario = {
-        id: usuarioLogado.id,
+        id: usuarioArmazenado.id,
         nome: input_nome.value,
         telefone: input_telefone.value,
         cpf: input_cpf.value,
@@ -173,11 +174,7 @@ async function alterarCadastroDeUsuario(){
         }
     };
 
-    Object.keys(usuario).forEach(key => {
-        if (usuario[key] === undefined || usuario[key] === null || usuario[key] === "") {
-            delete usuario[key];
-        }
-    });
+    limparVazios(usuario)
 
     // preparando requisição
     let headers = new Headers();
@@ -196,9 +193,13 @@ async function alterarCadastroDeUsuario(){
             document.body.style.cursor = "default"
             btn_submit.style.opacity = "1";
             notificar('Dados alterados com sucesso!','sucesso');
-
             var dadosUsuario = await response.json();
-            console.log(dadosUsuario);
+            atualizarUsuario(dadosUsuario)
+
+            setTimeout(() => {
+                document.querySelector('.form-atualizar-dados').reset();
+            }, 5000);
+
         } else {
             notificar('Erro ao alterar Dados','erro');
             document.body.style.cursor = "default"
@@ -212,12 +213,65 @@ async function alterarCadastroDeUsuario(){
     });
 }
 
+function atualizarUsuario(dadosUsuario) {
+    const usuarioLogado = JSON.parse(localStorage.getItem("usuario"));
+
+    usuarioLogado.nome = dadosUsuario.nome;
+    usuarioLogado.cpf = dadosUsuario.cpf;
+    if(usuarioLogado.endereco){
+        usuarioLogado.endereco.logradouro = dadosUsuario.endereco.logradouro;
+        usuarioLogado.endereco.cep = dadosUsuario.endereco.cep;
+        usuarioLogado.endereco.numero = dadosUsuario.endereco.numero;
+        usuarioLogado.endereco.complemento = dadosUsuario.endereco.complemento;
+        usuarioLogado.endereco.bairro = dadosUsuario.endereco.bairro;
+        usuarioLogado.endereco.cidade = dadosUsuario.endereco.cidade;
+        usuarioLogado.endereco.uf = dadosUsuario.endereco.uf;
+    }
+    usuarioLogado.telefone = dadosUsuario.telefone;
+    usuarioLogado.email = dadosUsuario.email;
+    
+    localStorage.setItem("usuario", JSON.stringify(usuarioLogado));
+    exibirDadosUsuario(usuarioLogado);
+}
+
+function exibirDadosUsuario(usuario) {
+    document.querySelector('.output-nome').innerText = 'Nome: ' + usuario.nome;
+    document.querySelector('.output-cpf').innerText = 'Cpf: ' + usuario.cpf;
+    // se o objeto "endereco" existe antes de acessar suas propriedades
+    if (usuario.endereco) {
+        document.querySelector('.output-rua').innerText = 'Rua: ' + usuario.endereco.logradouro;
+        document.querySelector('.output-cep').innerText = 'Cep: ' + usuario.endereco.cep;
+        document.querySelector('.output-numero').innerText = 'Numero: ' + usuario.endereco.numero;
+        document.querySelector('.output-complemento').innerText = 'Complemento: ' + usuario.endereco.complemento;
+        document.querySelector('.output-bairro').innerText = 'Bairro: ' + usuario.endereco.bairro;
+        document.querySelector('.output-cidade').innerText = 'Cidade: ' + usuario.endereco.cidade;
+        document.querySelector('.output-uf').innerText = 'UF: ' + usuario.endereco.uf;
+    }
+    document.querySelector('.output-celular').innerText = 'Celular: ' + usuario.telefone; 
+    document.querySelector('.output-email').innerText = 'E-mail: ' + usuario.email;
+}
+
+function limparVazios(obj) {
+    Object.keys(obj).forEach(key => {
+        if (obj[key] && typeof obj[key] === 'object') {
+            //função recursiva
+            limparVazios(obj[key]);
+            
+            if (Object.keys(obj[key]).length === 0) {
+                delete obj[key];
+            }
+        } else if (obj[key] === undefined || obj[key] === null || obj[key] === "") {
+            
+            delete obj[key];
+        }
+    });
+}
+
 /*
 ============================================================================
 |                      METODOS PARA VALIDAR INFORMAÇÕES                    |
 ============================================================================
 */
-
 
 function hasTamanhoDesejado(input, tamanho){
     if(input.value.trim() === '' || input.value.trim() === null ){
@@ -290,9 +344,7 @@ async function isEmailDisponivel(email){
                 throw new Error('Erro na requisição');
             }
             var data = await email_disp.json();
-            console.log(data)
             return data; 
-            
         } catch (error) {
             console.error('Erro na Requisição:', error);
             return false

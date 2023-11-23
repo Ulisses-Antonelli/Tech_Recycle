@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,13 +8,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../static/css/theme.css" />
-    <link rel="stylesheet" href="../static/css/styleLogin.css" />
+    <link rel="stylesheet" href="../../static/css/theme.css" />
+    <link rel="stylesheet" href="../../static/css/styleLogin.css" />
   </head>
   <body>
     <div class="login-container">
       <div class="d-flex justify-content-between align-items-center">
-        <a href="#"> <img src="../static/imgs/Logo.svg" class="logo" alt="Logo" /> </a>
+        <a href="#"> <img src="../../static/imgs/Logo.svg" class="logo" alt="Logo" /> </a>
         <h4 class="fw-bold">Fazer Login</h4>
       </div>
       <div class="clearfix mb-3"></div>
@@ -39,7 +39,7 @@
           </div>
           <div class="clearfix"></div>
         </div>
-        <button type="submit" class="botao btn bg-verde-claro btn-block fw-bold" id="fazerLogin" data-url="../template/menuUsuario.html">Fazer Login</button>
+        <button type="button" class="btn bg-verde-claro btn-block fw-bold" id="fazerLogin">Fazer Login</button>
       </form>
       <div class="separator">ou</div>
       <button class="botao btn bg-azul-claro btn-block fw-bold" data-url="./cadastroUsuario.html">Cadastre-se como cliente</button>
@@ -48,6 +48,7 @@
     <div id="modal" style="display: none">
       <p>Usuário Logado com sucesso!</p>
     </div>
-    <script type="module" src="../static/js/Login.js"></script>
+    <script src="../../static/js/utilitarios/notificacao.js"></script>
+    <script src="../../static/js/usuario/NovoLogin.js"></script>
   </body>
 </html>

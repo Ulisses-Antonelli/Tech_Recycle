@@ -1,5 +1,8 @@
 package tech.recycle.api.controller;
 
+import java.util.HashMap;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +34,8 @@ import tech.recycle.api.model.Usuario;
 import tech.recycle.api.repository.UsuarioRepository;
 
 @RestController
-@CrossOrigin
+// @CrossOrigin(origins = { "http://localhost:5501" })
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("usuario")
 public class UsuarioController {
 
@@ -60,24 +64,49 @@ public class UsuarioController {
         return ResponseEntity.ok(page);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/porEmail/{email}")
+    @CrossOrigin(origins = "*")
+    public ResponseEntity<Boolean> acharUsuarioPorEmail(@PathVariable("email") String email) {
+        boolean emailExiste = repository.existsByCredenciaisEmail(email);
+        return ResponseEntity.ok(emailExiste);
+    }
+
+    @GetMapping("/usuarioPorEmail/{email}")
+    @CrossOrigin(origins = "*")
+    public ResponseEntity<DadosAtualizacaoUsuarioRetorno> obterUsuarioPorEmail(@PathVariable("email") String email) {
+        Usuario usuario = (Usuario) repository.findByCredenciaisEmail(email);
+        DadosAtualizacaoUsuarioRetorno dados = new DadosAtualizacaoUsuarioRetorno(usuario);
+        return ResponseEntity.ok(dados);
+    }
+
+    @GetMapping("/porCpf/{cpf}")
+    @CrossOrigin(origins = "*")
+    public ResponseEntity<?> acharUsuarioPorCpf(@PathVariable("cpf") String cpf) {
+        Optional<Usuario> usuario = repository.findByCpf(cpf);
+
+        if (usuario.isPresent()) {
+            return ResponseEntity.status(200).body(usuario.get());
+        } else {
+            HashMap<String, Boolean> disp = new HashMap<>();
+            disp.put("disponivel", true);
+            return ResponseEntity.status(200).body(disp);
+        }
+    }
+
+    @GetMapping("/porId/{id}")
     public ResponseEntity<?> ExibirUsuarioPorId(@PathVariable Long id) {
         var usuario = repository.getReferenceById(id);
-
         return ResponseEntity.ok(new DadosAtualizacaoUsuarioRetorno(usuario));
-        // repository.deleteById(id);
     }
 
     @PutMapping
     @Transactional
+    @CrossOrigin(origins = "*")
     public ResponseEntity<?> atualizar(@RequestBody @Valid DadosAtualizacaoUsuario dados,
             DadosAtualizaçãoCredenciais dadosCredenciais) {
 
         var usuario = repository.getReferenceById(dados.id());
         usuario.atualizarInformacoes(dados);
-        // System.out.println(dados);
-        // System.out.println(dadosCredenciais);
-        // // usuario.atualizarCredenciais(dadosCredenciais);
         repository.save(usuario);
 
         return ResponseEntity.ok(new DadosAtualizacaoUsuarioRetorno(usuario));
@@ -85,6 +114,7 @@ public class UsuarioController {
 
     @DeleteMapping("/{id}")
     @Transactional
+    @CrossOrigin(origins = "*")
     public ResponseEntity<?> excluir(@PathVariable Long id) {
         var usuario = repository.getReferenceById(id);
         usuario.excluirUsuario();

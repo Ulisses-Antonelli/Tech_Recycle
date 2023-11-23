@@ -54,23 +54,22 @@ public class Usuario implements UserDetails {
     }
 
     public void atualizarInformacoes(@Valid DadosAtualizacaoUsuario dados) {
+
         if (dados.nome() != null) {
             this.nome = dados.nome();
         }
+
         if (dados.telefone() != null) {
             this.telefone = dados.telefone();
         }
+
         if (dados.cpf() != null) {
             this.cpf = dados.cpf();
         }
+
         if (dados.privilegio() != null) {
             this.privilegio = dados.privilegio();
         }
-
-        // if (dados.credenciais() != null) {
-        // this.credenciais.atualizarEmail(dados.credenciais().email());
-        // this.credenciais.atualizarPassword(dados.credenciais().senhaCrypt());
-        // }
 
         if (dados.endereco() != null) {
             this.endereco.atualizarInformacoes(dados.endereco());
@@ -128,5 +127,4 @@ public class Usuario implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 }

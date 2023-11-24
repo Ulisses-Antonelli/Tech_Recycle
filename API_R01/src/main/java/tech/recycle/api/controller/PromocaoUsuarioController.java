@@ -2,6 +2,8 @@ package tech.recycle.api.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import tech.recycle.api.dto.DadosCompraPromocao;
+import tech.recycle.api.dto.DadosListagemPromoHistorico;
 import tech.recycle.api.model.PromocaoUsuario;
 import tech.recycle.api.repository.PromocaoRepository;
 import tech.recycle.api.repository.PromocaoUsuarioRepository;
@@ -32,8 +35,11 @@ public class PromocaoUsuarioController {
 
     @CrossOrigin
     @GetMapping
-    public ResponseEntity<Page<PromocaoUsuario>> listarPromos(){
-        
+    public ResponseEntity<Page<DadosListagemPromoHistorico>> listarPromosAtivas
+    (@PageableDefault(size = 10, sort = {"id"}) Pageable paginacao){
+        var page = repository.findAllPromocoes(paginacao);
+
+        return ResponseEntity.status(200).body(page);
     }
 
     @CrossOrigin

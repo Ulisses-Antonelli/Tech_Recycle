@@ -42,8 +42,13 @@ public class Usuario {
 
     private Integer quant_pontos;
 
+    // chave estrangeira Pontos
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Pontos> listaPontosRecebidos;
+
+    // chave estrangeira PromocaoUsuario
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PromocaoUsuario> listaPromocoesCompradas;
 
     public Usuario(DadosCadastroUsuario dados) {
         this.ativo = true;

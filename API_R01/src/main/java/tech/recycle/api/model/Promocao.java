@@ -1,6 +1,7 @@
 package tech.recycle.api.model;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -8,6 +9,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ColumnResult;
 import jakarta.persistence.ConstructorResult;
@@ -18,6 +20,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedNativeQuery;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SqlResultSetMapping;
 import jakarta.persistence.Table;
 import jakarta.validation.Valid;
@@ -103,6 +106,10 @@ public class Promocao {
         this.quant_vendidos = 0;
         this.empresa = empresa;
     }
+
+    // chave estrangeira PromocaoUsuario
+    @OneToMany(mappedBy = "promocao", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PromocaoUsuario> listaUsuariosCompradores;
 
     public void atualizarPromocao(@Valid DadosAtualizacaoPromocao dados){
         if(dados.descricao() != null){

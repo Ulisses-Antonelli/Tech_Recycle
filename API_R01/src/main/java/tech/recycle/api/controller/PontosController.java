@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.P
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,18 +33,6 @@ public class PontosController {
     @Autowired
     private UsuarioRepository usuario_repo;
 
-    /* 
-    @CrossOrigin
-    @GetMapping
-    public ResponseEntityity<List<Pontos>> listaTodasTransacoes
-    (@PageableDefault(size = 10, sort = {"id"}) Pageable paginacao){
-        var page = repository.findAllPromocao(paginacao);
-
-        return ResponseEntity.status(200).body(page);
-        
-    }
-    */
-
     @CrossOrigin
     @PostMapping
     public ResponseEntity<String> lancarPontos(@RequestBody DadosLancamentoPontos dto){
@@ -61,5 +50,4 @@ public class PontosController {
         
         return ResponseEntity.status(404).body("Erro ao localizar Empresa ou Usuário");
     }
-
 }

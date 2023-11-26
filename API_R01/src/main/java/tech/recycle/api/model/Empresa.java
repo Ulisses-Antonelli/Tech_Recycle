@@ -53,7 +53,7 @@ public class Empresa {
     @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Pontos> listaPontosConcedidos;
     
-    public Empresa(DadosCadastroEmpresa dados){
+    public Empresa(DadosCadastroEmpresa dados, Credenciais credenciais){
         this.ativo = true;
         this.estabelecimento = dados.estabelecimento();
         this.tipoEstabelecimento = dados.tipoEstabelecimento();
@@ -61,7 +61,7 @@ public class Empresa {
         this.telefone = dados.telefone();
         this.foto = dados.foto();
         this.endereco = new Endereco(dados.endereco());
-        this.credenciais = new Credenciais(dados.credenciais());
+        this.credenciais = credenciais;
     }
 
     public void atualizarEmpresa(DadosAtualizacaoEmpresa dados){

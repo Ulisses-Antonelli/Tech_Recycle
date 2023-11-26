@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import tech.recycle.api.model.Usuario;
 
@@ -13,9 +14,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     Page<Usuario> findAllAllByAtivoTrue(Pageable paginacao);
 
-    @Query(value = "SELECT * FROM usuarios WHERE id = ?1 AND ativo = 1", nativeQuery = true)
-    Usuario findByIdWhereAtivoTrue(Long id);
+    UserDetails findByCredenciaisEmail(String email);
 
-    @Query(value = "SELECT * FROM usuarios WHERE email = ?1 AND password = ?2", nativeQuery = true)
-    Optional<Usuario> findByEmailAndSenha(String email, String password);
+    boolean existsByCredenciaisEmail(String email);
+
+    @Query(value = "SELECT * FROM usuarios c WHERE c.cpf = ?1", nativeQuery = true)
+    Optional<Usuario> findByCpf(String cpf);
 }

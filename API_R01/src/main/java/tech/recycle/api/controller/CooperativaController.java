@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,6 +26,7 @@ import tech.recycle.api.dto.DadosAtualizacaoCooperativa;
 import tech.recycle.api.dto.DadosCadastroCooperativa;
 import tech.recycle.api.dto.DadosListagemCooperativa;
 import tech.recycle.api.model.Cooperativa;
+import tech.recycle.api.model.Credenciais;
 import tech.recycle.api.repository.CooperativaRepository;
 
 @RestController
@@ -38,7 +40,10 @@ public class CooperativaController {
     @PostMapping
     @Transactional
     public ResponseEntity<Cooperativa> cadastrarCooperativa(@RequestBody @Valid DadosCadastroCooperativa dados){
-        var cooperativa = new Cooperativa(dados);
+        String senhaCrypt = new BCryptPasswordEncoder().encode(dados.credenciais().getPassword());
+        var credenciais = new Credenciais(dados.credenciais().getEmail(), senhaCrypt);
+
+        var cooperativa = new Cooperativa(dados, credenciais);
         repository.save(cooperativa);
         return ResponseEntity.status(201).body(cooperativa);
     }

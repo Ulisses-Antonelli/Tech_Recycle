@@ -3,6 +3,7 @@ package tech.recycle.api.dto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import tech.recycle.api.model.Credenciais;
 
 public record DadosCadastroEmpresa(
         @NotBlank String estabelecimento, 
@@ -17,7 +18,7 @@ public record DadosCadastroEmpresa(
                             
         @Valid DadosEnderecoUsuario endereco,
 
-        @Valid DadosCredenciaisUsuario credenciais
+        @Valid Credenciais credenciais
 ) {
     
 }

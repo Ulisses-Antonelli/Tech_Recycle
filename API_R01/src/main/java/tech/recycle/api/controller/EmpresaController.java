@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,6 +25,7 @@ import jakarta.validation.Valid;
 import tech.recycle.api.dto.DadosAtualizacaoEmpresa;
 import tech.recycle.api.dto.DadosCadastroEmpresa;
 import tech.recycle.api.dto.DadosListagemEmpresa;
+import tech.recycle.api.model.Credenciais;
 import tech.recycle.api.model.Empresa;
 import tech.recycle.api.repository.EmpresaRepository;
 
@@ -85,8 +87,11 @@ public class EmpresaController {
 
     @CrossOrigin
     @PostMapping
-    public ResponseEntity<Empresa> creatEmpresa(@RequestBody @Valid DadosCadastroEmpresa data){
-        Empresa empresa = new Empresa(data);
+    public ResponseEntity<Empresa> creatEmpresa(@RequestBody @Valid DadosCadastroEmpresa dados){
+        String senhaCrypt = new BCryptPasswordEncoder().encode(dados.credenciais().getPassword());
+        var credenciais = new Credenciais(dados.credenciais().getEmail(), senhaCrypt);
+
+        Empresa empresa = new Empresa(dados, credenciais);
         repository.save(empresa);
         return ResponseEntity.ok().body(empresa);
     }

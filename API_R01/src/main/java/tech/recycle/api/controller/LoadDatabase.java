@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 import tech.recycle.api.model.Privilegio;
 import tech.recycle.api.model.Usuario;
+import tech.recycle.api.model.Credenciais;
 import tech.recycle.api.model.Eletronicos;
 import tech.recycle.api.model.Empresa;
 import tech.recycle.api.repository.EletronicosRepository;
@@ -70,7 +71,7 @@ public class LoadDatabase {
             // Empresa 
             if(empresa_repo.findAll().size() == 0){
                 DadosEnderecoUsuario enderec = new DadosEnderecoUsuario("Rua 123", "Jardim Direita", "23232344","22","Loja","São Paulo", "SP");
-                DadosCredenciaisUsuario credenc = new DadosCredenciaisUsuario("Lucas@gmail.com", "12345678");
+                Credenciais credenc = new Credenciais("Lucas@gmail.com", "12345678");
                 byte[] foto = null;
 
                 DadosCadastroEmpresa dto1 = new DadosCadastroEmpresa("Lucas Calçados", 
@@ -81,14 +82,14 @@ public class LoadDatabase {
                                                                     enderec, 
                                                                     credenc);
 
-                Empresa empresa = new Empresa(dto1);
+                Empresa empresa = new Empresa(dto1, credenc);
                 empresa_repo.save(empresa);
             }
 
             //  Usuario
             if(usuario_repo.findAll().size() == 0){
                 DadosEnderecoUsuario enderec = new DadosEnderecoUsuario("Rua 123", "Jardim Direita", "23232344","22","Loja","São Paulo", "SP");
-                DadosCredenciaisUsuario credenc = new DadosCredenciaisUsuario("Lucas@gmail.com", "12345678");
+                Credenciais credenc = new Credenciais("Lucas@gmail.com", "12345678");
 
                 DadosCadastroUsuario dto2 = new DadosCadastroUsuario("Ulisses Antonelli", 
                                                                     "951441190", 
@@ -97,7 +98,7 @@ public class LoadDatabase {
                                                                     credenc, 
                                                                     enderec);
 
-                Usuario usuario = new Usuario(dto2);
+                Usuario usuario = new Usuario(dto2, credenc);
                 usuario_repo.save(usuario);
 
             }

@@ -1,31 +1,34 @@
 package tech.recycle.api.model;
 
-import jakarta.persistence.Embeddable;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import tech.recycle.api.dto.DadosCredenciaisUsuario;
 
 @Embeddable
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
+
 public class Credenciais {
 
     private String email;
     private String password;
 
-    public Credenciais(DadosCredenciaisUsuario dados) {
-        this.email = dados.email();
-        this.password = dados.password();
+    public Credenciais(String email, String senhaCrypt) {
+        this.email = email;
+        this.password = senhaCrypt;
+
     }
 
-    public void atualizarCredenciais(DadosCredenciaisUsuario dados) {
-        if (dados.email() != null) {
-            this.email = dados.email();
-        }
-        if (dados.password() != null) {
-            this.password = dados.password();
+    public void atualizarEmail(String email) {
+        if (email != null) {
+            this.email = email;
         }
     }
+
+    public void atualizarPassword(String senhaCrypt) {
+        if (senhaCrypt != null) {
+            this.password = senhaCrypt;
+        }
+    }
+
 }

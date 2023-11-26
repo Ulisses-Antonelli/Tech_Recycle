@@ -35,13 +35,13 @@ public class Cooperativa {
 
     private boolean ativo;
 
-    public Cooperativa(DadosCadastroCooperativa dados){
+    public Cooperativa(DadosCadastroCooperativa dados, Credenciais credenciais){
         this.ativo = true;
         this.nome = dados.nome();
         this.telefone = dados.telefone();
         this.cnpj = dados.cnpj();
         this.endereco = new Endereco(dados.endereco());
-        this.credenciais = new Credenciais(dados.credenciais());
+        this.credenciais = credenciais;
     }
 
     public void atualizarInformacoes(@Valid DadosAtualizacaoCooperativa dados){

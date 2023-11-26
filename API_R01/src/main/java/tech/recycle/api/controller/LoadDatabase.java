@@ -16,9 +16,8 @@ import tech.recycle.api.repository.EletronicosRepository;
 import tech.recycle.api.repository.EmpresaRepository;
 import tech.recycle.api.repository.UsuarioRepository;
 import tech.recycle.api.dto.DadosCadastroEmpresa;
-import tech.recycle.api.dto.DadosEnderecoUsuario;
-import tech.recycle.api.dto.DadosCredenciaisUsuario;
 import tech.recycle.api.dto.DadosCadastroUsuario;
+import tech.recycle.api.dto.DadosEnderecoUsuario;
 
 @Configuration
 public class LoadDatabase {
@@ -35,7 +34,7 @@ public class LoadDatabase {
     @Bean
     CommandLineRunner initTabelaEletronicos(){
         return args -> {
-            if(repository.findAll().size() == 0){
+            if(repository.findAll().isEmpty()){
                 Eletronicos e1 = new Eletronicos("Ar Condicionado", 10000);
                 Eletronicos e2 = new Eletronicos("Freezer", 10000);
                 Eletronicos e3 = new Eletronicos("Geladeira", 8000);
@@ -69,12 +68,12 @@ public class LoadDatabase {
             }
 
             // Empresa 
-            if(empresa_repo.findAll().size() == 0){
+            if(empresa_repo.findAll().isEmpty()){
                 DadosEnderecoUsuario enderec = new DadosEnderecoUsuario("Rua 123", "Jardim Direita", "23232344","22","Loja","São Paulo", "SP");
-                Credenciais credenc = new Credenciais("Lucas@gmail.com", "12345678");
+                Credenciais credenc = new Credenciais("jingle@gmail.com", "12345678");
                 byte[] foto = null;
 
-                DadosCadastroEmpresa dto1 = new DadosCadastroEmpresa("Lucas Calçados", 
+                DadosCadastroEmpresa dto1 = new DadosCadastroEmpresa("Jingle Calçados", 
                                                                     "Calçados", 
                                                                     "06057223000171", 
                                                                     "11951441190", 
@@ -87,11 +86,11 @@ public class LoadDatabase {
             }
 
             //  Usuario
-            if(usuario_repo.findAll().size() == 0){
+            if(usuario_repo.findAll().isEmpty()){
                 DadosEnderecoUsuario enderec = new DadosEnderecoUsuario("Rua 123", "Jardim Direita", "23232344","22","Loja","São Paulo", "SP");
-                Credenciais credenc = new Credenciais("Lucas@gmail.com", "12345678");
+                Credenciais credenc = new Credenciais("Admin@gmail.com", "12345678");
 
-                DadosCadastroUsuario dto2 = new DadosCadastroUsuario("Ulisses Antonelli", 
+                DadosCadastroUsuario dto2 = new DadosCadastroUsuario("Admin ", 
                                                                     "951441190", 
                                                                     "91319218920", 
                                                                     Privilegio.USUARIO, 

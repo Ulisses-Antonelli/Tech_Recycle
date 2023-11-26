@@ -2,7 +2,7 @@
     --cor-azul-escuro: #164B60;
     --cor-azul-normal: #1B6B93;
     --cor-azul-claro: #4FC0D0;
-    --cor-verde-claro: #A2FF86;
+    --cor-verde-claro: rgb(115, 209, 86);
     --cor-vermelho-escuro: #601616;
 }
 
@@ -14,7 +14,11 @@ body > *{
 }
 
 h1, h2, h3, h4, h5, h6, p, input, label{
-    font-weight: 400;
+    font-weight: 300;
+}
+
+.fw-light{
+    font-weight: 300;
 }
 
 .fw-normal{
@@ -100,6 +104,11 @@ a,
 .bg-vermelho-escuro,
 .btn.bg-vermelho-escuro{
     background-color: var(--cor-vermelho-escuro) !important;
+}
+
+.bg-preto,
+.btn.bg-preto{
+    background-color: #000;
 }
 
 /* inputs */

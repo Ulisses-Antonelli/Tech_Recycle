@@ -1,6 +1,8 @@
 package tech.recycle.api.controller;
 
+import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -8,12 +10,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import tech.recycle.api.model.Privilegio;
+import tech.recycle.api.model.Promocao;
 import tech.recycle.api.model.Usuario;
 import tech.recycle.api.model.Credenciais;
 import tech.recycle.api.model.Eletronicos;
 import tech.recycle.api.model.Empresa;
 import tech.recycle.api.repository.EletronicosRepository;
 import tech.recycle.api.repository.EmpresaRepository;
+import tech.recycle.api.repository.PontosRepository;
+import tech.recycle.api.repository.PromocaoRepository;
 import tech.recycle.api.repository.UsuarioRepository;
 import tech.recycle.api.dto.DadosCadastroEmpresa;
 import tech.recycle.api.dto.DadosCadastroUsuario;
@@ -30,6 +35,14 @@ public class LoadDatabase {
 
     @Autowired
     private UsuarioRepository usuario_repo;
+
+    @Autowired
+    private PromocaoRepository promocao_repo;
+
+    @Autowired
+    private PontosRepository pontos_repo;
+
+    private Empresa empresa;
 
     @Bean
     CommandLineRunner initTabelaEletronicos(){
@@ -81,8 +94,11 @@ public class LoadDatabase {
                                                                     enderec, 
                                                                     credenc);
 
-                Empresa empresa = new Empresa(dto1, credenc);
+                empresa = new Empresa(dto1, credenc);
                 empresa_repo.save(empresa);
+            } else {
+                List<Empresa> lista = empresa_repo.findAll();
+                empresa = lista.get(0);
             }
 
             //  Usuario
@@ -101,7 +117,36 @@ public class LoadDatabase {
                 usuario_repo.save(usuario);
 
             }
-                
+            
+            // Promoção e Pontos
+            if(promocao_repo.findAll().isEmpty()){
+                Promocao p1 = new Promocao(3000, "Desconto 5%", LocalDate.of(2023, 6, 11), empresa);
+                p1.setQuant_vendidos(20);
+
+                Promocao p2 = new Promocao(3000, "Desconto 10%", LocalDate.of(2023, 6, 18), empresa);
+                p2.setQuant_vendidos(5);
+
+                Promocao p3 = new Promocao(3000, "Desconto 15%", LocalDate.of(2023, 7, 11), empresa);
+                p3.setQuant_vendidos(10);
+
+                Promocao p4 = new Promocao(3000, "Desconto 20%", LocalDate.of(2023, 7, 10), empresa);
+                p4.setQuant_vendidos(7);
+
+                Promocao p5 = new Promocao(3000, "Desconto 25%", LocalDate.of(2023, 8, 11), empresa);
+                p5.setQuant_vendidos(2);
+
+                Promocao p6 = new Promocao(3000, "Desconto 30%", LocalDate.of(2023, 9, 11), empresa);
+                p6.setQuant_vendidos(20);
+
+                Promocao p7 = new Promocao(3000, "Desconto 35%", LocalDate.of(2023, 10, 11), empresa);
+                p7.setQuant_vendidos(100);
+
+                Promocao p8 = new Promocao(3000, "Desconto 40%", LocalDate.of(2023, 11, 11), empresa);
+                p8.setQuant_vendidos(6);
+
+                promocao_repo.saveAll(Arrays.asList(p1,p2,p3,p4,p5,p6,p7,p8));
+            }
+        
         };
     }
 }

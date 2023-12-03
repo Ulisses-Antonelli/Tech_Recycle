@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     headers.append('Accept', 'application/json');
     headers.append('Origin', '*');
 
-    await fetch('http://localhost:8080/promocao/buscaPorEmpresa/1', {
+    await fetch('http://localhost:8080/promocao/buscaPorEmpresa/2', {
         mode: 'cors',
         method: 'GET',
         headers: headers
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         return data.json()
     }).then(dados => {
         
-        let promocoes = dados.content;
+        let promocoes = dados;
         console.log(promocoes)
 
         promocoes.forEach(promocao => {

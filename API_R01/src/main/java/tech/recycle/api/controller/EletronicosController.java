@@ -16,7 +16,7 @@ import tech.recycle.api.model.Eletronicos;
 import tech.recycle.api.repository.EletronicosRepository;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("eletronicos")
 public class EletronicosController {
     

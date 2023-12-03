@@ -1,9 +1,8 @@
 package tech.recycle.api.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,13 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import tech.recycle.api.dto.DadosCadastroPromocao;
+import tech.recycle.api.dto.DadosEstatisticasGraficoLoja;
+import tech.recycle.api.dto.DadosEstatisticasVendasLoja;
 import tech.recycle.api.dto.DadosListagemPromocao;
 import tech.recycle.api.model.Promocao;
 import tech.recycle.api.repository.EmpresaRepository;
 import tech.recycle.api.repository.PromocaoRepository;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("promocao")
 public class PromocaoController {
 
@@ -33,22 +34,35 @@ public class PromocaoController {
     @Autowired
     private EmpresaRepository empresa_repo;
 
-    @CrossOrigin
     @GetMapping
-    public ResponseEntity<Page<DadosListagemPromocao>> listaTodasPromocoes
-    (@PageableDefault(size = 10, sort = {"id"}) Pageable paginacao){
-        var page = repository.findAllPromocao(paginacao);
+    public ResponseEntity<List<DadosListagemPromocao>> listaTodasPromocoes(){
+        var page = repository.findAllPromocao();
 
         return ResponseEntity.status(200).body(page);
     }
 
-    @CrossOrigin
     @GetMapping("buscaPorEmpresa/{id}")
-    public ResponseEntity<Page<DadosListagemPromocao>> listarPromocoesDaEmpresa
-    (@PathVariable("id") Long id, @PageableDefault(size = 10, sort = {"id"}) Pageable paginacao){
-        var page = repository.findAllPromocaoByEmpresa(id, paginacao);
+    public ResponseEntity<List<DadosListagemPromocao>> listarPromocoesDaEmpresa
+    (@PathVariable("id") Long id){
+        var page = repository.findAllPromocaoByEmpresa(id);
 
         return ResponseEntity.status(200).body(page);
+    }
+    
+    @GetMapping("vendasLoja/{id}")
+    public ResponseEntity<List<DadosEstatisticasGraficoLoja>> getVendasUltimosSeisMeses
+    (@PathVariable("id") Long id){
+        var dados = repository.findVendasUltimosMeses(id);
+
+        return ResponseEntity.status(202).body(dados);
+    }
+
+    @GetMapping("estatisticasLoja/{id}")
+    public ResponseEntity<DadosEstatisticasVendasLoja> getEstatisticas
+    (@PathVariable("id") Long id){
+        var dados = repository.findEstatisticasLoja(id);
+
+        return ResponseEntity.status(202).body(dados);
     }
 
     @PostMapping

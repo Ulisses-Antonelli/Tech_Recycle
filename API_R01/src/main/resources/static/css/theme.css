@@ -80,6 +80,10 @@ a,
     color: var(--cor-verde-claro) !important;
 }
 
+.texto-preto{
+    color: #000;
+}
+
 /* COR DE FUNDO*/
 .bg-azul-escuro,
 .btn.bg-azul-escuro{
@@ -110,6 +114,7 @@ a,
 .btn.bg-preto{
     background-color: #000;
 }
+
 
 /* inputs */
 

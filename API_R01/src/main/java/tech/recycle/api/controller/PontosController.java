@@ -15,7 +15,7 @@ import tech.recycle.api.repository.PontosRepository;
 import tech.recycle.api.repository.UsuarioRepository;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("pontos")
 public class PontosController {
     

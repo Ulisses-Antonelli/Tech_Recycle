@@ -40,7 +40,7 @@ async function logarUsuario() {
             const data = await response.json();
             const token = data.token;
         
-            const usuarioResponse = await fetch('http://localhost:8080/usuario/usuarioPorEmail/'+email, {
+            const loginResponse = await fetch('http://localhost:8080/auth/login/'+email, {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + token,
@@ -51,21 +51,24 @@ async function logarUsuario() {
             });
 
             
-            if (usuarioResponse.ok) {
+            if (loginResponse.ok) {
+                
                 alert('Logado');
-                const usuarioDTO = await usuarioResponse.json();
+                const usuarioDTO = await loginResponse.json();
                 const usuario = JSON.parse(usuarioDTO);
+                console.log(usuarioDTO);
 
                 localStorage.setItem('usuario', JSON.stringify(usuario));
 
+                if(usuarioDTO.tabela == "usuario"){
+                    notificar('Logando...','sucesso');
+                    setTimeout( () => {
+                        window.location.replace("http://stackoverflow.com");
+                    },5000);
+                }
             } else {
-                throw new Error('Erro ao obter informações do usuário:', usuarioResponse.status);
+                throw new Error('Erro ao obter informações do usuário:', loginResponse.status);
             }
-
-            // setTimeout(() => {
-            //     modal.style.display = 'none';
-            //     document.getElementById('login-form').reset();
-            // }, 5500);
 
         } else {
             alert('Erro ao inserir credenciais.');

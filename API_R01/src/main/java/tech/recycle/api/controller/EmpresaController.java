@@ -30,6 +30,7 @@ import tech.recycle.api.model.Empresa;
 import tech.recycle.api.repository.EmpresaRepository;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/empresa")
 public class EmpresaController {
 

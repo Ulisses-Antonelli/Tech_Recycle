@@ -14,19 +14,66 @@ document.addEventListener("DOMContentLoaded", function () {
 
     btnLogin.addEventListener("click", async (e) => {
         try {
-            var email_disponivel = await isEmailDisponivel(input_email.value);
-            if (email_disponivel) {
-                e.preventDefault();
-                document.body.style.cursor = "wait";
-                btnLogin.style.opacity = "0.7";
-                await logarUsuario();
+            e.preventDefault();
+            array_inputs_obrigatorios.forEach((input) => {
+            if (isCampoVazio(input)) {
+                notificar('O Campo "' + input.getAttribute("placeholder") + '" está Vazio', "erro");
+                document.body.style.cursor = "default";
+                btnLogin.style.opacity = "1";
+                throw new Error("Existem Campos Vázios no Formulário");
+            }
+            });
 
-                const usuarioResponse = await obterUsuarioPorEmail(input_email.value);
+            if (!hasTamanhoEntre(input_password, 8, 64)) {
+                document.body.style.cursor = "default";
+                btnLogin.style.opacity = "1";
+                notificar("A senha deve ter no mínimo 8 Caracteres", "erro");
+                throw new Error("Senha com tamanho invalido");
+            }
+            
+            document.body.style.cursor = "wait";
+            btnLogin.style.opacity = "0.7";
+            // await logarUsuario();
+
+            let caminho_atual = window.location.href.split("/");
+            caminho_atual.pop();
+            caminho_atual.pop();
+            
+            let caminho_base = ""
+            caminho_atual.forEach(parte => {
+                caminho_base += parte+"/"
+            })
+
+            const usuarioResponse = await obterUsuarioPorEmail(input_email.value)
+            console.log(usuarioResponse)
+
+            if(usuarioResponse != null || usuarioResponse != undefined){
                 localStorage.setItem("usuario", JSON.stringify(usuarioResponse));
+                let dados = usuarioResponse
+                console.log(dados[14]);
 
+                notificar("Logado com sucesso", "sucesso");
+                setTimeout( () => {
+                    if(dados[0] == "usuario"){
+                        if(dados[14] == "ADMIN"){
+                            window.location.href = caminho_base+"menuAdmin.html";
+                        } else {
+                            window.location.href = caminho_base+"usuarios/menuUsuario.html";
+                        }
+                       
+                    } 
+                    if(dados[0] == "loja"){
+                        window.location.href = caminho_base+"menuLoja.html";
+                    }
+                    if(dados[0] == "cooperativa"){
+                        window.location.href = caminho_base+"usuarios/telaLogin.html";
+                    }
+                    
+                },2000);
             } else {
                 notificar("Email não encontrado, por favor cadastre-se no sistema", "erro");
-                throw new Error("Email não encontrado");
+                document.body.style.cursor = "normal";
+                btnLogin.style.opacity = "1";
             }
         } catch (error) {
             error.preventReload = true;
@@ -92,28 +139,6 @@ async function logarUsuario() {
 
 
 
-async function isEmailDisponivel(email) {
-    try {
-        let headers = new Headers();
-        headers.append("Content-Type", "application/json");
-        headers.append("Accept", "application/json");
-        headers.append("Origin", "*");
-
-        let email_disp = await fetch("http://localhost:8080/usuario/porEmail/" + email, {
-        method: "GET",
-        headers: headers,
-        });
-        if (!email_disp.ok) {
-        throw new Error("Erro na requisição");
-        }
-        var data = email_disp.json();
-        return data;
-    } catch (error) {
-        console.error("Erro na Requisição:", error);
-        return false;
-    }
-}
-
 async function obterUsuarioPorEmail(email) {
     try {
         let headers = new Headers();
@@ -121,12 +146,13 @@ async function obterUsuarioPorEmail(email) {
         headers.append("Accept", "application/json");
         headers.append("Origin", "*");
 
-        let response = await fetch('http://localhost:8080/usuario/usuarioPorEmail/' + email, {
+        let response = await fetch('http://localhost:8080/auth/login/' + email, {
             method: 'GET',
-            headers: headers,
-        });
-
+            headers: headers
+        })
+        
         if (!response.ok) {
+            notificar("Email não Cadastrado no sistema","erro");
             throw new Error("Erro na requisição");
         }
 
@@ -138,6 +164,7 @@ async function obterUsuarioPorEmail(email) {
         throw error;
     }
 }
+
 
 function isCampoVazio(input) {
     if (input.value == "" || input.value == null) {

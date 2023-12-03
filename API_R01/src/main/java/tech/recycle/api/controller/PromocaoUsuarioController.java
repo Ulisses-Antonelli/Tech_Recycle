@@ -20,7 +20,7 @@ import tech.recycle.api.repository.PromocaoUsuarioRepository;
 import tech.recycle.api.repository.UsuarioRepository;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("promosAtivas")
 public class PromocaoUsuarioController {
     

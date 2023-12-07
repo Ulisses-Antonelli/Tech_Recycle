@@ -30,12 +30,16 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     NumTotalPromocoes.innerHTML = estatisticas.quant_promocoes;
     
+		/**/
+
+		
+
     let vendas = await fetch('http://localhost:8080/promocao/vendasLoja/'+ID_TESTE, {
         mode: 'cors',
         method: 'GET',
         headers: headers
     }).then(res => {
-        return res.json()
+        return res.json();
     })
 
     console.log(vendas);

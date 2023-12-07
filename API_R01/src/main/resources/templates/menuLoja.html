@@ -13,6 +13,10 @@
 				background-color: var(--cor-azul-escuro);
       }
 
+			.box-shadow{
+				box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+			}
+
 			a.btn{
 				text-decoration: none !important;
 			}
@@ -57,7 +61,7 @@
 				padding: 1rem;
 			}
     </style>
-    <title>Document</title>
+    <title>Loja</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary px-3 shadow-sm bg-white" style="height:12%;">
@@ -86,7 +90,7 @@
                       <li><a class="dropdown-item" href="#">Criar Nova Promoção</a></li>
                     </ul>
                   </li>
-									<li class="nav-item ml-0 mr-3" style="transition: 0.5s;">
+										<li class="nav-item ml-0 mr-3" style="transition: 0.5s;">
                     <a class="nav-link px-2 text-dark" href="../templates/empresa/adicionarPontos.html"><h6 class="m-0 fw-bold fs-7">Lançar Pontos</h6></a>
                   </li>
                 </ul>
@@ -99,7 +103,7 @@
             <span class="rounded-circle text-white bg-azul-escuro d-flex align-items-center justify-content-center" style="width: 2.5rem; height: 2.5rem">
                 <h4 class="m-0 p-0">R</h4>
             </span>
-            <a href="#"><h6 class="my-0 ml-3 px-2 btn btn-link"> Sair </h6> </a>
+            <a href="../templates/telaHome.html"><h6 class="my-0 ml-3 px-2 btn btn-link"> Sair </h6> </a>
           </div>
         </div>
     </nav>
@@ -114,7 +118,7 @@
 
 			<div class="col-sm-10 text-white d-flex justify-content-start mt-4 px-5">
 				<!-- botão nova promo -->
-				<a class="btn nav-link" href="#">
+				<a class="btn nav-link" href="../templates/promocao/cadastrarPromocoesPorLoja.html">
 					<span class="btn-acao-loja text-start botao-com-icone w-auto bg-verde-claro">
 						<h6 class="align-self-center m-0 text-body fw-bold py-3 px-4">Criar Promoção</h6>
 						<h3 class="justify-self-center fw-bolder m-0 p-2">&#10133;</h3>
@@ -122,10 +126,10 @@
 				</a>
 
 				<!-- botão minhas promos -->
-				<a class="btn nav-link" href="#">
+				<a class="btn nav-link" href="../templates/promocao/cadastrarPromocoesPorLoja.html">
 					<span class="btn-acao-loja text-start botao-com-icone w-auto bg-verde-claro">
-						<h6 class="align-self-center m-0 text-body fw-bold py-3 px-4">Minhas Promoções</h6>
-						<h3 class="justify-self-center fw-bolder m-0 p-2">&#128269;</h3>
+						<h6 class="align-self-center m-0 text-body fw-bold py-3 px-4">Aplicar Desconto</h6>
+						<h3 class="justify-self-center fw-bolder m-0 p-2">&#37;</h3>
 					</span>
 				</a>
 
@@ -133,7 +137,7 @@
 				<a class="btn nav-link" href="../templates/empresa/adicionarPontos.html">
 					<span class="btn-acao-loja text-start botao-com-icone w-auto bg-verde-claro">
 						<h6 class="align-self-center m-0 text-body fw-bold py-3 px-4">Lançar Pontos</h6>
-						<h3 class="justify-self-center fw-bolder m-0 p-2">&#x1F31F;</h3>
+						<h3 class="justify-self-center fw-bolder m-0 p-2">&#9733;</h3>
 					</span>
 				</a>
 			</div>
@@ -143,6 +147,31 @@
     </div>
 
 		<hr class="align-self-center border border-white border-3 opacity-50 w-75 my-3">
+
+		<div class="bg-azul-escuro w-100 d-flex flex-column justify-content-start align-items-center my-4 px-4">
+			<div class="w-100 d-flex flex-row justify-content-center align-items-start">
+				<div class="col-sm-10 text-white d-flex flex-column mt-1 align-items-center" style="padding: 0 5rem;">
+					<h3 class="fw-bold text-white mx-5 px-5 mb-3">Minhas Promoções</h3>
+					<div class="bg-white w-100 box-shadow rounded-5" style="height: 30vw; overflow: auto;">
+            <table class="table">
+                <caption style="display: none;"> Tabela com uma lista de todas as promocoes de uma empresa</caption>
+                <thead>
+                  <tr>
+                    <th scope="col" class="align-middle text-center" style="width:6%;">#</th>
+                    <th scope="col" class="align-middle" style="width:45%;">Descrição</th>
+                    <th scope="col" class="align-middle text-center">Preço</th>
+                    <th scope="col" class="align-middle text-center">Vendas</th>
+                    <th scope="col" class="align-middle text-center">Data de Criação</th>
+                    <th scope="col" class="align-middle text-center" style="width:6%;"></th>
+                  </tr>
+                </thead>
+                <tbody id="tbl-corpo">
+                </tbody>
+            </table>
+        </div>
+				</div>
+			</div>
+		</div>
 
 		<div class="bg-azul-escuro w-100 d-flex flex-column justify-content-start align-items-center my-4 px-4">
       <div class="w-100 d-flex flex-row justify-content-center align-items-start">
@@ -197,6 +226,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="../static/js/utilitarios/notificacao.js"></script>
 	<script src="../static/js/promocao/menuLoja.js"></script>
+	<script src="../static/js/promocao/minhasPromocoes.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <script>
 			/*

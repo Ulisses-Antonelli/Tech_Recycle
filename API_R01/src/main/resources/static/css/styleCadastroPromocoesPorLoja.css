@@ -142,7 +142,7 @@ footer{
 .container-lista-de-promocoes{
     display: grid;
     grid-template-rows: 70px 1fr;
-    grid-column: 3/4;
+    grid-column: 1/4;
     justify-self: center;
     align-self: baseline; 
 }

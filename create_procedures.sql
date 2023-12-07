@@ -28,6 +28,19 @@ BEGIN
 END $
 DELIMITER ;
 
+-- (PARA A LOJA) Busca todas as promocoes da loja 
+DELIMITER $
+CREATE PROCEDURE PROC_BUSCAR_MINHAS_PROMOCOES(
+IN param_id BIGINT
+)
+BEGIN
+	SELECT id, DATE_FORMAT(data_criacao, "%d/%m/%Y") AS data_criacao, descricao, preco, quant_vendidos
+    FROM promocao 
+    WHERE empresa_id = param_id;
+END $
+DELIMITER ;
+CALL PROC_BUSCAR_MINHAS_PROMOCOES(2);
+
 -- BUSCAR TOTAL DE VENDAS POR MES NOS ULTIMOS 6 MESES, PELO ID DA LOJA
 DELIMITER $
 CREATE PROCEDURE PROC_VENDAS_ULTIMOS_MESES (

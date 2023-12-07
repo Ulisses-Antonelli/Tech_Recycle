@@ -19,6 +19,7 @@ import tech.recycle.api.dto.DadosCadastroPromocao;
 import tech.recycle.api.dto.DadosEstatisticasGraficoLoja;
 import tech.recycle.api.dto.DadosEstatisticasVendasLoja;
 import tech.recycle.api.dto.DadosListagemPromocao;
+import tech.recycle.api.dto.DadosMinhasPromocoes;
 import tech.recycle.api.model.Promocao;
 import tech.recycle.api.repository.EmpresaRepository;
 import tech.recycle.api.repository.PromocaoRepository;
@@ -45,6 +46,14 @@ public class PromocaoController {
     public ResponseEntity<List<DadosListagemPromocao>> listarPromocoesDaEmpresa
     (@PathVariable("id") Long id){
         var page = repository.findAllPromocaoByEmpresa(id);
+
+        return ResponseEntity.status(200).body(page);
+    }
+
+    @GetMapping("buscaPorEmpresa/owner/{id}")
+    public ResponseEntity<List<DadosMinhasPromocoes>> listarPromocoesDaEmpresaFull
+    (@PathVariable("id") Long id){
+        var page = repository.findAllPromocaoByEmpresaOwner(id);
 
         return ResponseEntity.status(200).body(page);
     }

@@ -192,6 +192,19 @@ async function cadastroDeUsuario(){
             document.body.style.cursor = "default"
             btn_submit.style.opacity = "1";
             notificar('Usuário cadastrado com sucesso!','sucesso');
+            let caminho_atual = window.location.href;
+            let caminho_array = caminho_atual.split("/");
+            caminho_array.pop();
+
+            let caminho_base = ""
+            
+            caminho_array.forEach(elem => {
+                caminho_base += elem+"/";
+            })
+
+            setTimeout( () => {
+                window.location.href = caminho_base+"telaLogin.html";
+            },5000);
         } else {
             notificar('Erro ao cadastrar Usuário','erro');
             document.body.style.cursor = "default"
@@ -338,11 +351,12 @@ function isCpfValido(cpf) {
     // Comparando se os 2 dígitos calculados batem com os 2 últimos dígitos do CPF
     if (array_cpf[9] === res_primeiro_dv && array_cpf[10] === res_segundo_dv) {
         // Código para estilo válido
-        notificar("CPF é válido", "sucesso");
+        input_cpf.style.outline = "none";
         return true; // válido
     } else {
         // Código para estilo inválido
         notificar("O CPF é inválido", "erro");
+        input_cpf.style.outline = "2px solid #FF0000";
         return false; // inválido
     }
 }

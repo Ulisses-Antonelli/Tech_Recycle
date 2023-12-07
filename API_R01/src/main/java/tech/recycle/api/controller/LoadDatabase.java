@@ -109,7 +109,7 @@ public class LoadDatabase {
                 DadosCadastroUsuario dto2 = new DadosCadastroUsuario("Admin ", 
                                                                     "951441190", 
                                                                     "91319218920", 
-                                                                    Privilegio.USUARIO, 
+                                                                    Privilegio.ADMIN, 
                                                                     credenc, 
                                                                     enderec);
 
